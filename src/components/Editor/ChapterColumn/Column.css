@@ -1,0 +1,7 @@
+.editor__chapter-column {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  min-height: 200px;
+  background-color: lightgrey;
+}

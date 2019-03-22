@@ -67,11 +67,6 @@ const AuthApiService = {
       .catch(err => {
         console.log('refresh token request error')
         console.error(err)
-        //if there's an error refreshing, it logs you out, and refreshes the page.. need better solution.
-        // TokenService.clearAuthToken();
-        // TokenService.clearCallbackBeforeExpiry();
-        // IdleService.unRegisterIdleResets();
-        // window.location.reload();
       })
   },
 }

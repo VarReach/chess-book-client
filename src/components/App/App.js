@@ -1,85 +1,53 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
-import Header from '../Header/Header'
-import PrivateRoute from '../Utils/PrivateRoute'
-import PublicOnlyRoute from '../Utils/PublicOnlyRoute'
-import ThingListPage from '../../routes/ThingListPage/ThingListPage'
-import ThingPage from '../../routes/ThingPage/ThingPage'
-import LoginPage from '../../routes/LoginPage/LoginPage'
-import RegistrationPage from '../../routes/RegistrationPage/RegistrationPage'
-import NotFoundPage from '../../routes/NotFoundPage/NotFoundPage'
-
-import TokenService from '../../services/token-service';
-import AuthApiService from '../../services/auth-api-service';
-import IdleService from '../../services/idle-service';
-
+import config from '../../config';
+import { Route, Link } from 'react-router-dom';
 import './App.css'
+import LoginPage from '../../routes/LoginPage/LoginPage'
+
+import ChaptersPage from '../../routes/ChaptersPage/ChaptersPage';
+import { ChaptersProvider } from '../../contexts/ChaptersContext';
+import { ArticleProvider } from '../../contexts/ArticleContext';
+
+import ArticlePage from '../../routes/ArticlePage/ArticlePage';
+import EditorPage from '../../routes/EditorPage/EditorPage';
 
 class App extends Component {
-  state = { hasError: false }
-
-  static getDerivedStateFromError(error) {
-    console.error(error)
-    return { hasError: true }
-  }
-
-  componentDidMount() {
-    IdleService.setIdleCallback(this.logoutFromIdle);
-
-    // if a user is logged in: //
-    if (TokenService.hasAuthToken()) {
-      IdleService.registerIdleTimerResets();
-      TokenService.queueCallbackBeforeExpiry(() => {
-        AuthApiService.postRefreshToken();
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    IdleService.unRegisterIdleResets();
-    TokenService.clearCallbackBeforeExpiry();
-  }
-
-  logoutFromIdle = () => {
-    TokenService.clearAuthToken();
-    TokenService.clearCallbackBeforeExpiry();
-    IdleService.unRegisterIdleResets();
-    this.forceUpdate();
-  }
-
   render() {
     return (
-      <div className='App'>
-        <header className='App__header'>
-          <Header />
-        </header>
-        <main className='App__main'>
-          {this.state.hasError && <p className='red'>There was an error! Oh no!</p>}
-          <Switch>
+      <main role="main">
+        <Link to="/">Home</Link><br/>
+        <Link to="/login">Log in</Link><br/>
+        <Link to="/editor">Editor</Link>
+        <ChaptersProvider>
+          <ArticleProvider>
             <Route
-              exact
-              path={'/'}
-              component={ThingListPage}
+              exact path={'/'}
+              component={ChaptersPage}
             />
-            <PublicOnlyRoute
+            <Route
+              path={'/chapters/:chapterIndex/articles/:articleIndex'}
+              component={ArticlePage}
+            />
+            <Route
               path={'/login'}
               component={LoginPage}
             />
-            <PublicOnlyRoute
-              path={'/register'}
-              component={RegistrationPage}
-            />
-            <PrivateRoute
-              path={'/thing/:thingId'}
-              component={ThingPage}
-            />
-            <Route
-              component={NotFoundPage}
-            />
-          </Switch>
-        </main>
-      </div>
-    )
+          </ArticleProvider>
+        </ChaptersProvider>
+        <Route
+          path={'/editor'}
+          component={EditorPage}
+        />
+        {/* <Route
+          exact path={'editor/chapters/:chapterId/articles'}
+          component={EditorArticlesPage}
+        />
+        <Route
+          path={'editor/chapters/:chapterId/articles/:articleId'}
+          component={EditorArticlePage}
+        /> */}
+      </main>
+    );
   }
 }
 
