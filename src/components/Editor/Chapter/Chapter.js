@@ -3,35 +3,31 @@ import { Link } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 import ChaptersEditorContext from '../../../contexts/ChaptersEditorContext';
 import EditorApiService from '../../../services/editor-api-service';
+import './Chapter.css';
 
 class Chapter extends Component {
   static contextType = ChaptersEditorContext;
 
-  handleDeleteChapter = (chapterId) => {
-    EditorApiService.deleteChapter(chapterId)
-      .then(() => {
-        EditorApiService.getChapters()
-          .then(resp => {
-            this.context.setChapters(resp);
-          })
-          .catch(err => {
-            this.context.setError(err);
-          });
-      });
+  handleDeleteChapter = (chapter) => {
+    this.props.handleDeleteChapter(chapter.id);
+  }
+
+  handleEditChapter = (chapter) => {
+    this.props.showEditChapterForm(chapter.id);
   }
 
   render() {
     return (
       <Draggable draggableId={this.props.chapter.id} index={this.props.index}>
         {(provided) => (
-          <div className="chapter"
+          <div className="editor__chapter"
             {...provided.draggableProps}
             {...provided.dragHandleProps} //apply this to whatever you want the user to click on to drag it. Can be just a small section
             ref={provided.innerRef}
           >
-            <h1>{this.props.chapter.title}</h1>
-            <button onClick={()=>this.context.showEditChapterForm(this.props.chapter.id)}>Edit</button>
-            <button onClick={()=>this.handleDeleteChapter(this.props.chapter.id)}>Delete</button>
+            <h3>{this.props.chapter.title}</h3>
+            <button onClick={()=>this.handleEditChapter(this.props.chapter)}>Edit</button>
+            <button onClick={()=>this.handleDeleteChapter(this.props.chapter)}>Delete</button>
           </div>
         )}
       </Draggable>

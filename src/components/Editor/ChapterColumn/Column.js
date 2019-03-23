@@ -6,7 +6,7 @@ import './Column.css';
 class Column extends Component {
   getChapters = () => {
     return this.props.chapters.map((chapter,i) => {
-      return <Chapter key={chapter.id} index={i} chapter={chapter}/>
+      return <Chapter key={chapter.id} index={i} chapter={chapter} handleDeleteChapter={this.props.handleDeleteChapter} showEditChapterForm={this.props.showEditChapterForm}/>
     })
   }
 

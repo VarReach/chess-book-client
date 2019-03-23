@@ -63,7 +63,11 @@ const EditorApiService = {
           Promise.reject('Unable to delete');
         }
       });
-  }
+  },
+
+
+
+  
 }
 
 export default EditorApiService;
