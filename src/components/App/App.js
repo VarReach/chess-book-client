@@ -21,14 +21,6 @@ class App extends Component {
         <ChaptersProvider>
           <ArticleProvider>
             <Route
-              exact path={'/'}
-              component={ChaptersPage}
-            />
-            <Route
-              path={'/chapters/:chapterIndex/articles/:articleIndex'}
-              component={ArticlePage}
-            />
-            <Route
               path={'/login'}
               component={LoginPage}
             />

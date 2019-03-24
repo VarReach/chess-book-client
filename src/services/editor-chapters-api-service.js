@@ -1,7 +1,7 @@
 import config from '../config';
 import TokenService from './token-service';
 
-const EditorApiService = {
+const EditorChaptersApiService = {
   getChapters() {
     const options = {
       method: 'GET',
@@ -28,9 +28,9 @@ const EditorApiService = {
     };
     return fetch(`${config.API_ENDPOINT}/editor/chapters/${chapterId}`, options)
       .then(res => {
-        return (!res.ok) 
-          ? res.json().then(e => Promise.reject(e))
-          : res.json();
+        if (!res.ok) {
+          Promise.reject(`Unable to update chapter ${chapterId}`);
+        }
       });
   },
   createNewChapter(newChapter) {
@@ -70,4 +70,4 @@ const EditorApiService = {
   
 }
 
-export default EditorApiService;
+export default EditorChaptersApiService;

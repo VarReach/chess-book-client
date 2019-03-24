@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom';
-import { ChaptersEditorProvider } from '../../contexts/ChaptersEditorContext';
-import ChaptersEditorPage from '../ChaptersEditorPage/ChaptersEditorPage';
+import { EditorBookProvider } from '../../contexts/EditorBookContext';
+import EditorBookPage from '../EditorBookPage/EditorBookPage';
 
 class EditorPage extends Component {
   render() {
     return (
-      <ChaptersEditorProvider>
+      <EditorBookProvider>
         <section>
           <Route
-            exact
-            path="/editor"
-            component={ChaptersEditorPage}
+            path='/editor/books/:bookId'
+            component={EditorBookPage}
           />
         </section>
-      </ChaptersEditorProvider>
+      </EditorBookProvider>
     );
   }
 }
