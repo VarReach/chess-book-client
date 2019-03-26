@@ -1,0 +1,123 @@
+.app__header {
+  background-color: #2f343e;
+  height: 96px;
+  color: #f7f7f7;
+  box-shadow: 0 5px 0 0 #00000020;
+}
+
+.app__header-container {
+  display: flex;
+  align-items: center;
+}
+
+.app__header-title {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 30px;
+  color: #f7f7f7;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  padding-right: 20px;
+}
+
+.app__header-nav {
+  display: inline-block;
+}
+
+.app__header-nav {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.app__header-nav a, .app__header-nav-user-button {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #f7f7f7;
+}
+
+.app__header-nav>a, .app__header-nav-user-button {
+  margin: 0 5px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.app__header-nav-user {
+  position: relative;
+  margin-left: auto;
+}
+
+.app__header-nav-user-button {
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
+  outline: none;
+}
+
+.app__header-nav-user-button:focus {
+  background-color: #4d5b75;
+}
+
+.app__header-nav-user-button:hover
+ {
+  cursor: pointer;
+}
+
+
+.app__header-nav>a:hover, .app__header-nav-user-button:hover {
+  background-color: #4d5b75;
+}
+
+.app__header-user-dropdown {
+  width: 140px;
+  height: 100px;
+  top: 50px;
+  right: 0;
+}
+
+.app__header-user-dropdown:after {
+	bottom: 100%;
+	right: 22px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: #00000000;
+	border-bottom-color: #242831;
+	border-width: 0 16px 8px 16px;
+	margin-left: -20px;
+}
+
+.app__header-user-dropdown a {
+  margin: 0;
+  display: inline-block;
+  width: 100%;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.app__header-user-dropdown a:hover, .app__header-user-dropdown a:focus {
+  background-color: #363e53;
+  outline: none;
+} 
+
+/* .app__header-nav-list a:hover {
+  border-bottom: 1px solid #f7f7f7;
+} */
+
+@media only screen and (max-width: 600px) {
+  .app__header-title {
+    width: 60px;
+    margin: 0 5px;
+  }
+
+  .app__header-title>span {
+    display:none;
+  }
+}

@@ -4,12 +4,17 @@ import { Draggable } from 'react-beautiful-dnd';
 import './ChapterPreview.css';
 import EditorBookContext from '../../../contexts/EditorBookContext';
 
-class Chapter extends Component {
+class ChapterPreview extends Component {
   static contextType = EditorBookContext;
 
-  handleDeleteChapter = (e) => {
+  handleDeleteChapterOnClick = (e) => {
     e.preventDefault();
     this.props.handleDeleteChapter(this.props.chapter.id);
+  }
+
+  handleEditChapterOnClick = (e) => {
+    e.preventDefault();
+    this.props.showEditChapterForm(this.props.chapter.id)
   }
 
   render() {
@@ -21,8 +26,9 @@ class Chapter extends Component {
             {...provided.dragHandleProps} //apply this to whatever you want the user to click on to drag it. Can be just a small section
             ref={provided.innerRef}
           >
-            <Link to={`/editor/chapter/${this.props.chapter.id}`}><h3>{this.props.chapter.title}</h3></Link>
-            <button onClick={this.handleDeleteChapter}>Delete</button>
+            <Link to={`/editor/chapters/${this.props.chapter.id}`}><h3>{this.props.chapter.title}</h3></Link>
+            <button onClick={this.handleEditChapterOnClick}>Edit</button>
+            <button onClick={this.handleDeleteChapterOnClick}>Delete</button>
           </div>
         )}
       </Draggable>
@@ -30,4 +36,4 @@ class Chapter extends Component {
   }
 }
 
-export default Chapter
+export default ChapterPreview

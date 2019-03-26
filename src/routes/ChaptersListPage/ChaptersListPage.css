@@ -1,0 +1,47 @@
+.chapters-list__header {
+  display: flex;
+  position: relative;
+  margin-top: 125px !important;
+  margin-bottom: 140px !important;
+  padding: 0 30px !important;
+  color: #242425;
+}
+
+.chapters-list__book-details {
+  width: calc(100% - 35px);
+}
+
+.chapters-list__header h1, .chapters-list__header h3 {
+  word-break: break-word;
+  margin: 0;
+}
+
+.chapters-list__header-book-button {
+  position: relative;
+  padding: 0;
+  width: 35px;
+  background-color: transparent;
+  border: none;
+  color: #c0c0c0;
+  font-size: 30px;
+}
+
+.chapters-list__header-book-button:hover {
+  cursor: pointer;
+  color: #242425;
+}
+
+@media only screen and (max-width: 600px) {
+  .chapters-list__header {
+    margin-top: 60px !important;
+    margin-bottom: 80px !important;
+  }
+
+  .chapters-list__header h1 {
+    font-size: 32px;
+  }
+
+  .chapters-list__header h3 {
+    font-size: 20px;
+  }
+}

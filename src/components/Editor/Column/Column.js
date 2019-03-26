@@ -15,6 +15,7 @@ class Column extends Component {
         index={i} 
         chapter={this.context.chapters[chapterId]} 
         handleDeleteChapter={this.props.handleDeleteChapter}
+        showEditChapterForm={this.props.showEditChapterForm}
       />
     })
   }

@@ -8,23 +8,26 @@ import Column from '../../components/Editor/Column/Column';
 import NewChapterForm from '../../components/Editor/NewChapterForm/NewChapterForm';
 import EditChapterForm from '../../components/Editor/EditChapterForm/EditChapterForm';
 import helpers from '../../helpers/misc-helpers';
+import uuid from 'uuid/v4';
 
 //holds any changes made
 let changes = {
   deletions: [],
   creations: [],
+  newPositions: false, //incase the user moves all published chapters out
   positions: [],
-  title: {},
+  titles: {},
 };
 let orderBackup;
+let titleBackup = {};
 
 class ChaptersEditorPage extends Component {
   state = {
     book: {},
     columns: {},
     chapterOrder: [],
-    editing: false,
     fetching: false,
+    editChapterForm: null,
     newChapterForm: false,
     blockNavigation: false,
   }
@@ -33,6 +36,10 @@ class ChaptersEditorPage extends Component {
 
   componentDidMount() {
     this.getChapters();
+  }
+
+  componentWillUnmount() {
+    this.context.clearChapters();
   }
 
   componentDidUpdate() {
@@ -58,13 +65,14 @@ class ChaptersEditorPage extends Component {
   }
 
   organizeGetChaptersResponse = (resJson) => {
-    const { chapter_order, chapters } = resJson;
+    let { chapter_order, chapters } = resJson;
+    !chapters && (chapters = []);
 
     let resultChapters = {};
     chapters.forEach(chapter => {
       resultChapters[chapter.id] = chapter;
+      titleBackup[chapter.id] = chapter.title;
     });
-
     const wipChapterIds = chapters.filter(chapter => {
       return chapter_order.indexOf(chapter.id) === -1;
     })
@@ -74,6 +82,7 @@ class ChaptersEditorPage extends Component {
         const bDate = resultChapters[b].date_modified;
         return this.sortChaptersByDateModified(aDate, bDate);
       });
+
 
     let resultColumns = {
       publishedChapters: {
@@ -172,8 +181,7 @@ class ChaptersEditorPage extends Component {
         source.droppableId, 
         destination.droppableId, 
         sourceChapterIds,
-        destinationChapterIds,
-        this.checkIfChangedColumnsIndexes
+        destinationChapterIds
       );
     }
   }
@@ -194,10 +202,57 @@ class ChaptersEditorPage extends Component {
     this.getChapters();
   }
 
+  updateCreatedChapterIds = (id, actualId) => {
+    const index = changes.positions.indexOf(id);
+    if (index !== -1) {
+      changes.positions.splice(index, 1);
+      changes.positions.splice(index, 0, actualId);
+    }
+  }
+
+  createCreateRequests = () => {
+    return changes.creations.map(id => {
+      const newChapter = {...this.context.chapters[id]};
+      delete newChapter.id;
+      return EditorChaptersApiService.createNewChapter(newChapter)
+        .then(chapter => {
+          //need to update the ids in changes.positions and context with the one we get back from the request
+          const actualId = chapter.id;
+          this.context.updateCreatedChapterIds(id, actualId);
+          this.updateCreatedChapterIds(id, actualId);
+        })
+    });
+  }
+
+  createDeleteRequests = () => {
+    return changes.deletions.map(id => {
+      return EditorChaptersApiService.deleteChapter(id);
+    });
+  }
+
+  createPatchRequests = () => {
+    let patchRequests = [];
+
+    if (changes.newPositions) {
+      patchRequests.push(EditorBookApiService.updateBook(
+        this.state.book.id, 
+        { chapter_order: changes.positions }
+      ));
+    }
+
+    Object.keys(changes.titles).forEach(id => {
+      patchRequests.push(EditorChaptersApiService.updateChapter(
+        id, {title: changes.titles[id]}
+      ));
+    });
+
+    return patchRequests;
+  }
+
   onSaveClick = (e) => {
     e.preventDefault();
     //check if there are no changes to be made
-    if (!this.context.blockNavigation) {
+    if (!this.state.blockNavigation) {
       console.error('no changes');
       return;
     }
@@ -206,36 +261,10 @@ class ChaptersEditorPage extends Component {
       console.error('already fetching');
       return;
     }
-    const deleteRequests = changes.deletions.map(id => {
-      return EditorChaptersApiService.deleteChapter(id);
-    });
 
-    const createRequests = changes.creations.map(id => {
-      const newChapter = {...this.context.chapters[id]};
-      delete newChapter.id;
-      return EditorChaptersApiService.createNewChapter(newChapter)
-        .then(chapter => {
-          this.context.updateChapter()
-        })
-    });
-    //create the updatedObjects from the positions, titles and (un)published elements
-    let patchObjects = {};
-    //grab all updated positions
-    for (let [id,value] of Object.entries(changes.positions)) {
-      //create chapter object is doesn't exist
-      !patchObjects[id] && (patchObjects[id] = {});
-      patchObjects[id].index = value;
-    }
-    //grab all updated titles
-    for (let [id, value] of Object.entries(changes.titles)) {
-      !patchObjects[id] && (patchObjects[id] = {});
-      patchObjects[id].title = value;
-    }
-    const patchRequests = Object.keys(patchObjects).map(id => {
-      console.log(id, patchObjects[id]);
-      return EditorChaptersApiService.updateChapter(id, patchObjects[id]);
-    });
-    //prevent multiple requests, or discarding changes before they go through
+    const deleteRequests = this.createDeleteRequests();
+    const createRequests = this.createCreateRequests();
+
     this.setState({ fetching: true }, () => {
       //handle all creation/deletion requests
       Promise.all([
@@ -243,33 +272,54 @@ class ChaptersEditorPage extends Component {
         ...createRequests
       ])
         .then(() => {
+          const patchRequests = this.createPatchRequests();
           Promise.all(patchRequests)
             //get updated DOM, reset the changes object and state 
             .then(() => {
               this.resetChanges();
-              this.getChapters();
+              this.setState({ fetching: false });
+            })
+            .catch(err => {
+              this.context.setError(err);
             });
+        })
+        .catch(err => {
+          this.context.setError(err);
         });
     });
   }
 
-  
   checkIfChanged = () => {
     let blockNavigation = false;
-    for (const [_, value] of Object.entries(changes)) {
-      if (value.length > 0) {
-        blockNavigation = true;
-        break;
+    for (const key of Object.keys(changes)) {
+      const value = changes[key];
+      if (Array.isArray(value)) {
+        if (value.length > 0) {
+          blockNavigation = true;
+          break;
+        }
+      } else if (typeof(value) === 'boolean') {
+        if (value) {
+          blockNavigation = value;
+          break;
+        }
+      } else {
+        if (Object.keys(value).length > 0) {
+          blockNavigation = true;
+          break;
+        }
       }
     }
-    this.setState({ blockNavigation }, () => console.log(this.state.blockNavigation, changes));
+    this.setState({ blockNavigation });
   }
 
   resetChanges = () => {
     changes = {
       deletions: [],
       creations: [],
+      newPositions: false, //incase the user moves all published chapters out
       positions: [],
+      titles: {},
     };
     this.checkIfChanged();
   }
@@ -282,17 +332,20 @@ class ChaptersEditorPage extends Component {
     } else {
       changes.deletions.push(chapterId);
     }
-    //check if the chapter is in the positions array, remove if so
-    changes.positions[chapterId] && delete changes.positions[chapterId];
-    //update any indexes that may have been changed
-    if (columnId === 'wipChapters') {
-      this.updateColumnIndexes(columnId, this.state.columns[columnId].chapterIds);
-    } else if (columnId === 'publishedChapters') {
-      this.updateColumnsIndexes(
-        [columnId, 'wipChapters'], 
-        [this.state.columns[columnId].chapterIds, 
-        this.state.columns['wipChapters'].chapterIds]
-      );
+    //get an updated order for the published column without the deleted chapter
+    //compare against the backup -> not same ? update the changes.positions array : reset it
+    //we only track positions for published chapters in the DB
+    if (columnId === 'publishedChapters') {
+      let chapterPositions = Array.from(this.context.columns['publishedChapters'].chapterIds)
+      const positionsIndex = chapterPositions.indexOf(chapterId);
+      positionsIndex !== -1 && chapterPositions.splice(positionsIndex, 1);
+      if (!helpers.compareArrays(orderBackup, chapterPositions)) {
+        changes.positions = chapterPositions;
+        changes.newPositions = true;
+      } else {
+        changes.positions = [];
+        changes.newPositions = false;
+      }
     }
     this.checkIfChanged();
   }
@@ -300,7 +353,7 @@ class ChaptersEditorPage extends Component {
   updateChangesObjOnCreate = (newChapterId) => {
     changes.creations.push(newChapterId);
     //when creating, will always return true, this skips iteration
-    this.setState({ blockNavigation: true }, () => console.log(this.state.blockNavigation, changes));
+    this.setState({ blockNavigation: true });
   }
 
   updateChangesObjOnColumnIndexes = (columnId, newChapterIds) => {
@@ -312,8 +365,10 @@ class ChaptersEditorPage extends Component {
       //if the new ID does not equal the backed up index
       if (helpers.compareArrays(newChapterIds, orderBackup)) {
         changes.positions = [];
+        changes.newPositions = false;
       } else {
         changes.positions = newChapterIds;
+        changes.newPositions = true;
       }
     });
     this.checkIfChanged();
@@ -329,8 +384,21 @@ class ChaptersEditorPage extends Component {
 
     if (helpers.compareArrays(publishedChapters, orderBackup)) {
       changes.positions = [];
+      changes.newPositions = false;
     } else {
       changes.positions = publishedChapters;
+      changes.newPositions = true;
+    }
+    this.checkIfChanged();
+  }
+
+  updateChangesObjOnEditTitle = (chapterId, newTitle) => {
+    if (newTitle === titleBackup[chapterId]) {
+      changes.titles[chapterId] && delete changes.titles[chapterId];
+    } else {
+      if (changes.creations.indexOf(chapterId) === -1) {
+        changes.titles[chapterId] = newTitle;
+      }
     }
     this.checkIfChanged();
   }
@@ -338,24 +406,50 @@ class ChaptersEditorPage extends Component {
   handleCreateChapter = (e) => {
     e.preventDefault();
     const { title } = e.target;
-    this.updateChangesObjOnCreate();
-    this.context.createChapter(title.value);
+    const tempId = uuid();
+    this.updateChangesObjOnCreate(tempId);
+    this.context.createChapter(title.value, this.state.book.id, tempId);
     this.hideNewChapterForm();
   }
 
   handleDeleteChapter = (chapterId) => {
-    this.updateChangesObjOnDelete(chapterId);
-    this.context.deleteChapter(chapterId);
+    let columnId;
+    //find what column it's in and save to columnId
+    for (const [key,value] of Object.entries(this.context.columns)) {
+      if (value.chapterIds.indexOf(chapterId) !== -1) {
+        columnId = key;
+        break;
+      }
+    }
+    this.updateChangesObjOnDelete(chapterId, columnId);
+    this.context.deleteChapter(chapterId, columnId);
+  }
+
+  handleEditChapter = (e) => {
+    e.preventDefault();
+    const { title } = e.target;
+    const chapterId = this.state.editChapterForm;
+    this.updateChangesObjOnEditTitle(chapterId, title.value);
+    this.context.changeChapterTitle(chapterId, title.value);
+    this.hideEditChapterForm();
   }
 
   //#====================================================#
   //       render and related functions
   //#====================================================#
 
+  showEditChapterForm = (chapterId) => {
+    this.setState({ editChapterForm: chapterId });
+  }
+
+  hideEditChapterForm = () => {
+    this.setState({ editChapterForm: null });
+  }
+
   getColumns = () => {
     return Object.keys(this.context.columns).map(key => {
       const column = this.context.columns[key];
-      return <Column key={column.id} column={column} handleDeleteChapter={this.handleDeleteChapter}/>;
+      return <Column key={column.id} column={column} handleDeleteChapter={this.handleDeleteChapter} showEditChapterForm={this.showEditChapterForm}/>;
     });
   }
 
@@ -371,7 +465,7 @@ class ChaptersEditorPage extends Component {
           {this.getColumns()}
         </DragDropContext>
         {this.state.newChapterForm && <NewChapterForm handleCreateNewChapter={this.handleCreateChapter}/>}
-        <button onClick={this.showEditChapterForm}>Create new chapter</button>
+        {this.state.editChapterForm && <EditChapterForm title={this.context.chapters[this.state.editChapterForm].title} handleEditChapter={this.handleEditChapter}/>}
         <button onClick={this.showNewChapterForm}>Create new chapter</button>
         {this.state.blockNavigation && <button onClick={this.onSaveClick}>Save Changes</button>}
         {this.state.blockNavigation && <button onClick={this.onDiscardClick}>Discard Changes</button>}

@@ -3,6 +3,20 @@ import TokenService from './token-service';
 import IdleService from './idle-service';
 
 const AuthApiService = {
+  getUserInfo() {
+    const options = {
+      method: 'GET',
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      },
+    };
+    return fetch(`${config.API_ENDPOINT}/auth/users`, options)
+      .then(res => {
+        return (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json()
+      });
+  },
   postLogin(credentials) {
     const options = {
       method: 'POST',
@@ -27,13 +41,14 @@ const AuthApiService = {
       })
   },
   postUser(user) {
-    return fetch(`${config.API_ENDPOINT}/users`, {
+    const options = {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
       body: JSON.stringify(user),
-    })
+    };
+    return fetch(`${config.API_ENDPOINT}/users`, options)
       .then(resp => {
         return (!resp.ok)
           ? resp.json().then(e => Promise.reject(e))
@@ -41,23 +56,19 @@ const AuthApiService = {
       });
   },
   postRefreshToken() {
-    return fetch(`${config.API_ENDPOINT}/auth/refresh`, {
+    const options = {
       method: 'POST',
       headers: {
         'authorization': `Bearer ${TokenService.getAuthToken()}`,
       },
-    })
+    };
+    return fetch(`${config.API_ENDPOINT}/auth/refresh`, options)
       .then(res => {
         return (!res.ok)
           ? res.json().then(e => Promise.reject(e))
           : res.json()
       })
       .then(res => {
-        /*
-          similar logic to whenever a user logs in, the only differences are:
-          - we don't need to queue the idle timers again as the user is already logged in.
-          - we'll catch the error here as this refresh is happening behind the scenes
-        */
         TokenService.saveAuthToken(res.authToken)
         TokenService.queueCallbackBeforeExpiry(() => {
           AuthApiService.postRefreshToken()

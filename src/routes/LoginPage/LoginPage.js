@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import UserContext from '../../contexts/UserContext';
 
 export default class LoginPage extends Component {
   static defaultProps = {
@@ -9,9 +10,12 @@ export default class LoginPage extends Component {
     },
   }
 
+  static contextType = UserContext;
+
   handleLoginSuccess = () => {
     const { location, history } = this.props;
     const destination = (location.state || {}).from || '/';
+    this.context.getUserInfo();
     history.push(destination);
   }
 

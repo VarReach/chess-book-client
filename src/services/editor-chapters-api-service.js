@@ -2,7 +2,7 @@ import config from '../config';
 import TokenService from './token-service';
 
 const EditorChaptersApiService = {
-  getChapters() {
+  getChapterById(chapterId) {
     const options = {
       method: 'GET',
       headers: {
@@ -10,12 +10,12 @@ const EditorChaptersApiService = {
         'Authorization': `Bearer ${TokenService.getAuthToken()}`
       },
     };
-    return fetch(`${config.API_ENDPOINT}/editor/chapters`, options)
-    .then(res => {
-      return (!res.ok) 
-        ? res.json().then(e => Promise.reject(e))
-        : res.json();
-    });
+    return fetch(`${config.API_ENDPOINT}/editor/chapters/${chapterId}`, options)
+      .then(res => {
+        return (!res.ok) 
+          ? res.json().then(e => Promise.reject(e))
+          : res.json();
+      });
   },
   updateChapter(chapterId, updatedChapter) {
     const options = {
@@ -64,10 +64,6 @@ const EditorChaptersApiService = {
         }
       });
   },
-
-
-
-  
 }
 
 export default EditorChaptersApiService;

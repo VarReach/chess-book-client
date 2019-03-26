@@ -1,16 +1,14 @@
 import config from '../config';
-import TokenService from './token-service';
-import Chapter from '../components/Chapter/Chapter';
 
-const ArticleApiService = {
-  getArticle(chapterId, articleId) {
+const BooksApiService = {
+  getAllBooks() {
     const options = {
       method: 'GET',
       headers: {
         'content-type': 'application/json',
       },
     };
-    return fetch(`${config.API_ENDPOINT}/articles/${chapterId}/${articleId}`, options)
+    return fetch(`${config.API_ENDPOINT}/books/`, options)
     .then(res => {
       return (!res.ok) 
         ? res.json().then(e => Promise.reject(e))
@@ -19,4 +17,4 @@ const ArticleApiService = {
   },
 }
 
-export default ArticleApiService;
+export default BooksApiService;

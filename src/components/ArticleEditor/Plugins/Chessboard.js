@@ -4,7 +4,7 @@ import insertDataBlock from 'megadraft/lib/insertDataBlock';
 
 class Chessboard extends Component {
   render() {
-    return <ChessBoard position={this.props.data.position} draggable={false}/>
+    return <ChessBoard position={this.props.data.position} draggable={false} calcWidth={() => window.innerWidth*0.50}/>
   }
 }
 

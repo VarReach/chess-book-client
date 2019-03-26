@@ -1,35 +1,57 @@
 import React, { Component } from 'react'
-import config from '../../config';
-import { Route, Link } from 'react-router-dom';
-import './App.css'
+import { Route } from 'react-router-dom';
+import PrivateRoute from '../Utils/PrivateRoute';
+import PublicOnlyRoute from '../Utils/PublicOnlyRoute';
 import LoginPage from '../../routes/LoginPage/LoginPage'
-
-import ChaptersPage from '../../routes/ChaptersPage/ChaptersPage';
 import { ChaptersProvider } from '../../contexts/ChaptersContext';
-import { ArticleProvider } from '../../contexts/ArticleContext';
+import UserContext from '../../contexts/UserContext';
 
-import ArticlePage from '../../routes/ArticlePage/ArticlePage';
+import ChaptersListPage from '../../routes/ChaptersListPage/ChaptersListPage';
+import ChapterPage from '../../routes/ChapterPage/ChapterPage';
 import EditorPage from '../../routes/EditorPage/EditorPage';
+import Header from '../Header/Header';
+
+import './App.css'
 
 class App extends Component {
+  static contextType = UserContext;
+
+  componentDidMount() {
+    this.context.setIdleTimer()
+  }
+
+  componentWillUnmount() {
+    this.context.unsetIdleTimer();
+  }
+
   render() {
     return (
-      <main role="main">
-        <Link to="/">Home</Link><br/>
-        <Link to="/login">Log in</Link><br/>
-        <Link to="/editor">Editor</Link>
-        <ChaptersProvider>
-          <ArticleProvider>
-            <Route
-              path={'/login'}
+      <>
+        <Header />
+        <main>
+            
+            <PublicOnlyRoute
+              path='/login'
               component={LoginPage}
             />
-          </ArticleProvider>
-        </ChaptersProvider>
-        <Route
-          path={'/editor'}
-          component={EditorPage}
-        />
+            <ChaptersProvider>
+              <Route
+                exact
+                path="/"
+                component={ChaptersListPage}
+              />
+              <Route
+                path="/book/:bookId/chapter/:chapterIndex"
+                component={ChapterPage}
+              />
+            </ChaptersProvider>
+            <PrivateRoute
+              path='/editor'
+              component={EditorPage}
+            />
+        </main>
+       
+         
         {/* <Route
           exact path={'editor/chapters/:chapterId/articles'}
           component={EditorArticlesPage}
@@ -38,7 +60,7 @@ class App extends Component {
           path={'editor/chapters/:chapterId/articles/:articleId'}
           component={EditorArticlePage}
         /> */}
-      </main>
+      </>
     );
   }
 }
