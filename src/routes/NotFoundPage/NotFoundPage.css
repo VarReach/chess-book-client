@@ -1,0 +1,26 @@
+.not-found__banner {
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.not-found__banner h1 {
+  font-size: 120px;
+}
+
+.not-found__pawn {
+  position: relative;
+  top: 90px;
+  font-size: 240px;
+}
+
+@media only screen and (max-width: 600px) {
+  .not-found__pawn {
+    font-size: 160px;
+    top: 65px;
+  }
+
+  .not-found__banner h1 {
+    font-size: 80px;
+  }
+}

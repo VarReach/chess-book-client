@@ -42,6 +42,7 @@
 
 .article-container h2 {
   font-size: 20px;
+  margin-top: 40px;
   text-transform: capitalize;
 }
 
@@ -104,6 +105,10 @@
 @media only screen and (max-width: 600px) {
   .article__header h1 {
     font-size: 28px;
+  }
+
+  .article-container h2 {
+    font-size: 18px;
   }
 
   .article__header span {

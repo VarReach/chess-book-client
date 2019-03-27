@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../Utils/PrivateRoute';
 import PublicOnlyRoute from '../Utils/PublicOnlyRoute';
 import LoginPage from '../../routes/LoginPage/LoginPage'
-import { ChaptersProvider } from '../../contexts/ChaptersContext';
 import UserContext from '../../contexts/UserContext';
-
-import ChaptersListPage from '../../routes/ChaptersListPage/ChaptersListPage';
+import HomePage from '../../routes/HomePage/HomePage';
 import ChapterPage from '../../routes/ChapterPage/ChapterPage';
 import EditorPage from '../../routes/EditorPage/EditorPage';
 import Header from '../Header/Header';
-
+import NotFoundPage from '../../routes/NotFoundPage/NotFoundPage';
 import './App.css'
 
 class App extends Component {
@@ -28,30 +26,30 @@ class App extends Component {
     return (
       <>
         <Header />
-        <main>
-            
-            <PublicOnlyRoute
-              path='/login'
-              component={LoginPage}
-            />
-            <ChaptersProvider>
+          <main>
+            <Switch>
+              <PublicOnlyRoute
+                path='/login'
+                component={LoginPage}
+              />  
               <Route
                 exact
                 path="/"
-                component={ChaptersListPage}
+                component={HomePage}
               />
               <Route
                 path="/book/:bookId/chapter/:chapterIndex"
                 component={ChapterPage}
               />
-            </ChaptersProvider>
-            <PrivateRoute
-              path='/editor'
-              component={EditorPage}
-            />
-        </main>
-       
-         
+              <PrivateRoute
+                path='/editor'
+                component={EditorPage}
+              />
+              <Route
+                component={NotFoundPage}
+              />
+            </Switch>
+          </main>
         {/* <Route
           exact path={'editor/chapters/:chapterId/articles'}
           component={EditorArticlesPage}

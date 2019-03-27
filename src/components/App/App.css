@@ -32,6 +32,7 @@ h3 {
 }
 
 .dropdown {
+  z-index: 1;
   display: flex;
   align-items: center;
   position: absolute;

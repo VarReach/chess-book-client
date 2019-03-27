@@ -19,7 +19,6 @@ export default class Chessboard extends Component {
           {this.props.data.caption}
           {this.props.data.source && <span className="article__source"> Source: {this.props.data.source}</span>}
         </span>}
-        
       </figure>
     )
   }

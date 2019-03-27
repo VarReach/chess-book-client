@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import ChaptersContext from '../../contexts/ChaptersContext';
+import BooksContext from '../../contexts/BooksContext';
 import BooksApiService from '../../services/books-api-service';
 import { convertToHTML } from 'draft-convert';
 import { editorStateFromRaw } from 'megadraft';
+import { Redirect } from 'react-router-dom';
 import parse from 'html-react-parser';
 import Chessboard from '../../components/ArticleEditor/Components/Chessboard';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import './ChapterPage.css';
 
 const testData = ({
@@ -58,20 +60,20 @@ const testData = ({
     },
     {
       "key": "1ddpg",
-      "text": "It's a link!",
+      "text": "Nam et massa in est dictum accumsan et non dolor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar mollis massa id cursus. Nunc eget est a urna malesuada accumsan. Ut pellentesque in erat a ultrices. Nulla sem lacus, bibendum sit amet enim vitae, ultrices placerat felis. Pellentesque scelerisque facilisis imperdiet. Sed aliquam nibh et sodales varius. Quisque volutpat nisi libero, eu vulputate ligula lobortis eget. Sed congue odio non lectus dignissim congue. Curabitur mauris justo, ullamcorper in pellentesque ac, blandit ac nisi.",
       "type": "unstyled",
       "depth": 0,
       "inlineStyleRanges": [
         {
           "offset": 7,
-          "length": 9,
-          "style": "BOLD"
+          "length": 5,
+          "style": "ITALIC"
         }
       ],
       "entityRanges": [
         {
           "offset": 7,
-          "length": 4,
+          "length": 5,
           "key": 0
         }
       ],
@@ -124,7 +126,7 @@ const testData = ({
     },
     {
       "key": "16nkt",
-      "text": "a quote",
+      "text": "Suspendisse placerat egestas orci eu molestie. Etiam vulputate efficitur dui, in congue nisl convallis at. Ut ac ligula quis mauris auctor gravida.",
       "type": "blockquote",
       "depth": 0,
       "inlineStyleRanges": [],
@@ -133,7 +135,7 @@ const testData = ({
     },
     {
       "key": "fb6of",
-      "text": "",
+      "text": "Vestibulum vel dolor a lectus ultrices fringilla vel id mauris. Donec porttitor et ex ut imperdiet. Pellentesque vitae imperdiet enim. Suspendisse in sagittis leo. Nam porttitor, est at malesuada sagittis, sapien mauris pellentesque risus, tincidunt venenatis odio lacus in ex. Proin eget tortor tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Curabitur porttitor facilisis leo id aliquam. Sed at nisl pellentesque, egestas nunc sit amet, posuere velit. Donec eget mattis dui. Mauris consectetur velit vel aliquam euismod.",
       "type": "unstyled",
       "depth": 0,
       "inlineStyleRanges": [],
@@ -153,7 +155,7 @@ const testData = ({
 });
 
 export default class ChapterPage extends Component {
-  static contextType = ChaptersContext;
+  static contextType = BooksContext;
 
   componentDidMount() {
     //if all books aren't loaded yet, load the books
@@ -161,12 +163,15 @@ export default class ChapterPage extends Component {
     if (!Object.keys(this.context.books).length > 0) {
       BooksApiService.getAllBooks()
       .then(books => {
+        let defaultBook;
         let booksObj = {};
         books.forEach(book => {
           booksObj[book.id] = book;
+          book.default_book && (defaultBook = book.id);
         });
-        this.context.setInitialBook(bookId, booksObj);
-      }); 
+        books[bookId] && (defaultBook = bookId);
+        this.context.setInitialBook(defaultBook, booksObj);
+      });
     } else if (this.context.bookId !== this.props.match.params.bookId) {
       this.context.setBookId(bookId);
     }
@@ -215,17 +220,29 @@ export default class ChapterPage extends Component {
   }
 
   render() {
-    const { chapterIndex } = this.props.match.params;
+    let { chapterIndex, bookId } = this.props.match.params;
+    chapterIndex = parseInt(chapterIndex);
     const chapter = this.context.chapters[chapterIndex-1];
+    const bookKeys = Object.keys(this.context.books);
+    //checks to make sure the book / chapter combos are valid vs context
+    const validBook = !((this.context.chapters.length > 0 && !chapter) //chapters exist and this specific chapter exists
+                      || (bookKeys.length > 0 && bookKeys.indexOf(bookId) === -1) //this book exists
+                      || (bookId !== this.context.bookId));
     return (
       <>
-        {chapter && (
+        {(this.context.chapters.length > 0 && chapter) && (
           <article className="article-container">
             <header className="article__header">
               <span>{this.context.books[this.context.bookId].title} | Chapter {chapterIndex}</span>
               <h1>{chapter.title}</h1>
             </header>
           {this.renderHTML()}
+          <div className="article__chapter-buttons-holder">
+            <button onClick={this.goToFirstChapter} disabled={chapterIndex === 1}><i className="fas fa-angle-double-left"/></button>
+            <button onClick={this.goToPrevChapter} disabled={chapterIndex === 1}><i className="fas fa-angle-left"/></button>
+            <button onClick={this.goToNextChapter} disabled={parseInt(chapterIndex) === this.context.chapters.length}><i className="fas fa-angle-right"/></button>
+            <button onClick={this.goToLastChapter} disabled={chapterIndex === this.context.chapters.length}><i className="fas fa-angle-double-right"/></button>
+          </div>
           </article>
         )};
       </>

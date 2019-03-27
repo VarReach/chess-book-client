@@ -7,9 +7,14 @@ import './Header.css';
 import UserContext from '../../contexts/UserContext';
 
 export default class Header extends Component {
-  state = {
-    showDropDown: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDropDown: false,
+    };
+    this.dropDown = React.createRef();
   }
+
 
   static contextType = UserContext;
 
@@ -20,7 +25,7 @@ export default class Header extends Component {
   }
 
   toggleDropDown = (e) => {
-    if (e && ReactDOM.findDOMNode(this.refs.dropdown).contains(e.target)) {
+    if (e && this.dropDown.current.contains(e.target)) {
       return;
     }
     this.state.showDropDown ? this.hideDropDown() : this.showDropDown();
@@ -51,7 +56,7 @@ export default class Header extends Component {
                   : <><i className="fas fa-user-slash"/><span>{'Guest'}</span></>}
                 <i className="fas fa-caret-down"/>
               </button>
-              <div ref="dropdown" className={"dropdown app__header-user-dropdown" + (!this.state.showDropDown ? ' hidden' : '')}>
+              <div ref={this.dropDown} className={"dropdown app__header-user-dropdown" + (!this.state.showDropDown ? ' hidden' : '')}>
                 <ul>
                  {TokenService.hasAuthToken()
                     ? <li><Link to ="/" onClick={this.context.logout}>Logout</Link></li>

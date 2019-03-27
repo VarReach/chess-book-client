@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ChaptersContext from '../../contexts/ChaptersContext';
+import BooksContext from '../../contexts/BooksContext';
 import './BookSelectMenu.css';
 
 class BookSelectMenu extends Component {
-  static contextType = ChaptersContext;
+  static contextType = BooksContext;
 
   renderBooks = () => {
     const books = Object.keys(this.context.books).map(bookId => {
@@ -27,12 +27,10 @@ class BookSelectMenu extends Component {
 
   render() {
     return (
-      <div className="dropdown book-select__dropdown-menu">
-        <div id="book-select__dropdown-scroll">
-          <ul>
-            {this.renderBooks()}
-          </ul>
-        </div>
+      <div id="book-select__dropdown-scroll">
+        <ul>
+          {this.renderBooks()}
+        </ul>
       </div>
     )
   }
