@@ -1,25 +1,3 @@
-.book-select__dropdown-menu {
-  width: 300px;
-  height: 190px;
-  z-index: 1;
-  top: 0;
-  right: 100px;
-}
-
-.book-select__dropdown-menu:after {
-	left: 100%;
-	top: 22px;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-	border-color: #00000000;
-  border-left-color: #242831;
-  /* border-width: 0 16px 8px 16px; */
-  border-width: 16px 0 16px 8px;
-}
 
 #book-select__dropdown-scroll {
   height: 80%;

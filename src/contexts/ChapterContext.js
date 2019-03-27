@@ -1,33 +1,43 @@
 import React, { Component } from 'react'
 
-const BooksContext = React.createContext({
+const ChapterContext = React.createContext({
   chapter: {},
+  lastChapterAvailable: null,
   error: null,
   setChapter: () => {},
   clearChapter: () => {},
   setError: () => {},
+  getChapter: () => {},
 });
 
-export default BooksContext;
+export default ChapterContext;
 
-export class BooksProvider extends Component {
+export class ChapterProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: {},
+      chapter: {},
+      lastChapterAvailable: null,
       error: null,
-      setBooks: this.setBooks,
-      setBookId: this.setBookId,
+      setChapter: this.setChapter,
+      clearChapter: this.clearChapter,
+      getChapter: this.getChapter,
       setError: this.setError
     };
   }
 
-  setChapter = (books, bookId) => {
-    this.setState({ books }, () => this.setBookId(bookId));
+  getChapter = (bookId, chapterIndex) => {
+
   }
 
-  setBookId = (bookId) => {
-    this.setState({ bookId });
+  setChapter = (chapter) => {
+    let newState = { chapter, lastChapterAvailable: chapter.last_chapter_available };
+    delete newState.chapter.last_chapter_available;
+    this.setState(newState);
+  }
+
+  clearChapter = () => {
+    this.setState({ chapter: {} });
   }
 
   setError = (error) => {
@@ -36,9 +46,9 @@ export class BooksProvider extends Component {
 
   render() {
     return (
-      <BooksContext.Provider value={this.state}>
+      <ChapterContext.Provider value={this.state}>
         {this.props.children}
-      </BooksContext.Provider>
+      </ChapterContext.Provider>
     )
   }
 }

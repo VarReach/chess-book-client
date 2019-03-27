@@ -92,6 +92,36 @@
   color: #294985;
 }
 
+.article__chapter-buttons-holder {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.article__chapter-buttons-holder a, .article__chapter-buttons-holder button {
+  background-color: #f7f7f7;
+  width: 60px;
+  height: 40px;
+  border: 1px solid #c0c0c0;
+  box-shadow: 0 3px 0 0 #d9d9d9;
+}
+
+.article__chapter-buttons-holder button {
+  outline: none;
+}
+
+.article__chapter-buttons-holder a {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.article__chapter-buttons-holder a:hover, 
+.article__chapter-buttons-holder a:focus {
+  outline: 3px solid #d9d9d9;
+}
+
 @media only screen and (max-width: 1300px) {
   .article-container p, .article-container li {
     font-size: 16px;

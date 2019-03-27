@@ -10,6 +10,7 @@ const UserContext = React.createContext({
   logout: () => {},
   setIdleTimer: () => {},
   unsetIdleTimer: () => {},
+  completeChapter: () => {},
   setError: () => {},
 });
 
@@ -23,6 +24,7 @@ export class UserProvider extends Component {
       getUserInfo: this.getUserInfo,
       setIdleTimer: this.setIdleTimer,
       unsetIdleTimer: this.unsetIdleTimer,
+      completeChapter: this.completeChapter,
       logout: this.logout,
       setError: this.setError
     };
@@ -69,6 +71,23 @@ export class UserProvider extends Component {
   
   clearUser = (user) => {
     this.setState({ user: {} });
+  }
+
+  completeChapter = (chapterId) => {
+    if (TokenService.hasAuthToken()) {
+      if (this.state.user.completed_chapters && this.state.user.completed_chapters.findIndex(cc => cc.id === chapterId) !== -1) {
+        return;
+      };
+
+      AuthApiService.postCompletedChapter(chapterId)
+        .then(cc => {
+          const newUser = {...this.state.user, completed_chapters: [...this.state.user.completed_chapters, cc ] };
+          this.setState({ user: newUser });
+        })
+        .catch(err => {
+          this.setError(err);
+        });
+    }
   }
 
   setError = (error) => {

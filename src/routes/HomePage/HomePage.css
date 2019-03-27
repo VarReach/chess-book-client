@@ -1,5 +1,6 @@
 .home-page__header {
   display: flex;
+  align-items: center;
   position: relative;
   margin-top: 125px !important;
   margin-bottom: 140px !important;
@@ -9,24 +10,28 @@
 
 .home-page__book-details {
   width: calc(100% - 35px);
+  position: relative;
 }
 
 .home-page__header h1, .home-page__header h3 {
-  word-break: break-word;
+  padding-right: 5px;
   margin: 0;
 }
 
 .home-page__header-book-button {
   position: relative;
   padding: 0;
+  padding-top: 3px;
   width: 40px;
   height: 40px;
-  border-radius: 5px;
   background-color: transparent;
   border: none;
-  color: #c0c0c0;
-  font-size: 30px;
+  color: #838383;
+  font-size: 22px;
   outline: none;
+  background-color: #f7f7f7;
+  border: 1px solid #c0c0c0;
+  box-shadow: 0 3px 0 0 #d9d9d9;
 }
 
 .home-page__header-book-button:hover {
@@ -34,20 +39,19 @@
 }
 
 .home-page__header-book-button:hover, .home-page__header-book-button:focus {
-  color: #242425;
-  background-color: #f7f7f7;
+  box-shadow: none;
+  outline: 3px solid #d9d9d9;
 }
 
 .book-select__dropdown-menu {
   width: 300px;
   height: 190px;
-  top: -20px;
-  right: 80px;
+  right: 90px;
 }
 
 .book-select__dropdown-menu:after {
 	left: 100%;
-	top: 22px;
+	top: calc(50% - 16px);
 	border: solid transparent;
 	content: " ";
 	height: 0;
@@ -75,7 +79,7 @@
   }
 
   .book-select__dropdown-menu {
-    top: 50px;
+    top: 90px;
     right: 30px;
   }
 
@@ -88,5 +92,16 @@
     border-bottom-color: #242831;
     /* border-width: 0 16px 8px 16px; */
     border-width: 0 16px 8px 16px;
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+  .home-page__header h1 {
+    font-size: 26px;
+  }
+
+  .home-page__header h3 {
+    font-size: 16px;
   }
 }

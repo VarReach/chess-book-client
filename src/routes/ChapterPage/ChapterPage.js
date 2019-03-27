@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import BooksContext from '../../contexts/BooksContext';
-import BooksApiService from '../../services/books-api-service';
+import ChapterContext from '../../contexts/ChapterContext';
 import { convertToHTML } from 'draft-convert';
 import { editorStateFromRaw } from 'megadraft';
-import { Redirect } from 'react-router-dom';
 import parse from 'html-react-parser';
 import Chessboard from '../../components/ArticleEditor/Components/Chessboard';
+import ChapterApiService from '../../services/chapter-api-service';
+import { Link } from 'react-router-dom';
+import NextButton from '../../components/ChapterControls/NextButton';
+import { Redirect } from 'react-router-dom';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import './ChapterPage.css';
 
@@ -155,26 +157,20 @@ const testData = ({
 });
 
 export default class ChapterPage extends Component {
-  static contextType = BooksContext;
+  static contextType = ChapterContext;
 
   componentDidMount() {
-    //if all books aren't loaded yet, load the books
-    const {bookId} = this.props.match.params;
-    if (!Object.keys(this.context.books).length > 0) {
-      BooksApiService.getAllBooks()
-      .then(books => {
-        let defaultBook;
-        let booksObj = {};
-        books.forEach(book => {
-          booksObj[book.id] = book;
-          book.default_book && (defaultBook = book.id);
-        });
-        books[bookId] && (defaultBook = bookId);
-        this.context.setInitialBook(defaultBook, booksObj);
+    const { bookId, chapterIndex } = this.props.match.params;
+    ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
+      .then(this.context.setChapter)
+      .catch(err => {
+        console.error(err);
+        this.context.setError(err);
       });
-    } else if (this.context.bookId !== this.props.match.params.bookId) {
-      this.context.setBookId(bookId);
-    }
+  }
+
+  componentWillUnmount() {
+    this.context.clearChapter();
   }
 
   checkIfChessboard = (block) => {
@@ -201,7 +197,7 @@ export default class ChapterPage extends Component {
         return originalText;
       }
     };
-    const html = convertToHTML(interp)(editorStateFromRaw(testData).getCurrentContent());
+    const html = convertToHTML(interp)(editorStateFromRaw(this.context.chapter.content).getCurrentContent());
     const parseInterp = { 
       replace: (domNode) => {
         const { attribs } = domNode;
@@ -219,32 +215,67 @@ export default class ChapterPage extends Component {
     );
   }
 
+  getLinkOrButton = (path, disabled, targetIndex, iClass, value) => {
+    if (disabled) {
+      return <button disabled={true} className="article__chapter-controls"><i className={iClass}/></button>
+    }
+    return <Link to={path+targetIndex} onClick={this.handleOnClick} className="article__chapter-controls" data-direction={value}><i className={iClass}/></Link>;
+  }
+
+
+  handleControlsOnClick = (e, bookId, chapterIndex) => {
+    e.preventDefault();
+    if (chapterIndex > this.context.lastChapterAvailable) {
+      this.props.history.push('/');
+    } else {
+      ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
+        .then((chapter) => {
+          this.context.setChapter(chapter);
+          this.props.history.push(`/book/${bookId}/chapter/${chapterIndex}`);
+        })
+        .catch(err => {
+          console.error(err);
+          this.context.setError(err);
+        });
+    }
+  }
+
+  getChapterControls(chapterIndex) {
+      const bookId = this.props.match.url.split('/')[2];
+      return (
+        <div className="article__chapter-buttons-holder">
+          {chapterIndex === 1
+            ? <button disabled={true}><i className='fas fa-angle-double-left'/></button>
+            : <Link 
+                to={`/book/${bookId}/chapter/1`} 
+                onClick={(e) => this.handleControlsOnClick(e, bookId, 1)}>
+                  <i className='fas fa-angle-double-left'/>
+              </Link>}
+          {chapterIndex === 1
+            ? <button disabled={true}><i className='fas fa-angle-left'/></button>
+            : <Link 
+                to={`/book/${bookId}/chapter/1`} 
+                onClick={(e) => this.handleControlsOnClick(e, bookId, chapterIndex - 1)}>
+                  <i className='fas fa-angle-left'/>
+              </Link>}
+          <NextButton bookId={bookId} chapterIndex={chapterIndex} handleOnClick={this.handleControlsOnClick} />
+        </div>
+      );
+  }
+
   render() {
-    let { chapterIndex, bookId } = this.props.match.params;
-    chapterIndex = parseInt(chapterIndex);
-    const chapter = this.context.chapters[chapterIndex-1];
-    const bookKeys = Object.keys(this.context.books);
-    //checks to make sure the book / chapter combos are valid vs context
-    const validBook = !((this.context.chapters.length > 0 && !chapter) //chapters exist and this specific chapter exists
-                      || (bookKeys.length > 0 && bookKeys.indexOf(bookId) === -1) //this book exists
-                      || (bookId !== this.context.bookId));
+    const chapter = this.context.chapter;
+    const chapterIndex = parseInt(this.props.match.params.chapterIndex);
     return (
       <>
-        {(this.context.chapters.length > 0 && chapter) && (
-          <article className="article-container">
-            <header className="article__header">
-              <span>{this.context.books[this.context.bookId].title} | Chapter {chapterIndex}</span>
-              <h1>{chapter.title}</h1>
-            </header>
-          {this.renderHTML()}
-          <div className="article__chapter-buttons-holder">
-            <button onClick={this.goToFirstChapter} disabled={chapterIndex === 1}><i className="fas fa-angle-double-left"/></button>
-            <button onClick={this.goToPrevChapter} disabled={chapterIndex === 1}><i className="fas fa-angle-left"/></button>
-            <button onClick={this.goToNextChapter} disabled={parseInt(chapterIndex) === this.context.chapters.length}><i className="fas fa-angle-right"/></button>
-            <button onClick={this.goToLastChapter} disabled={chapterIndex === this.context.chapters.length}><i className="fas fa-angle-double-right"/></button>
-          </div>
-          </article>
-        )};
+        <article className="article-container">
+          <header className="article__header">
+            <span>{chapter.book_title} | Chapter {chapterIndex}</span>
+            <h1>{chapter.title}</h1>
+          </header>
+        {this.renderHTML()}
+        {(chapterIndex && chapter && this.context.lastChapterAvailable) && this.getChapterControls(chapterIndex)}
+        </article>
       </>
       
     )

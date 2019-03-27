@@ -6,36 +6,34 @@
   position: relative;
   background-color: #f7f7f7;
   border: 1px solid #c0c0c0;
+  text-decoration: none !important;
   margin-bottom: 20px;
   padding: 0 35px;
-  box-shadow: 0 5px 0 0 #00000020;
+  box-shadow: 0 3px 0 0 #d9d9d9;
 }
 
-.chapter-preview__chapter-details {
-  max-width: 100%;
+.chapter-preview:hover, a.chapter-preview:focus {
+  box-shadow: none;
+  outline: 3px solid #d9d9d9;
 }
 
-.chapter-preview__chapter-details a {
+.chapter-preview.completed-chapter {
+  border-left: 20px solid #c0c0c0;
+}
+
+.chapter-preview__chapter-details h2 {
+  margin: 3px 0 0;
+  font-size: 30px;
   display: inline-block;
   font-family: 'Libre Baskerville', serif;
   color: #242425;
-  text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   width: 100%;
 }
 
-.chapter-preview__chapter-details a:hover {
-  text-decoration: underline;
-}
-
-.chapter-preview__chapter-details h2 {
-  margin: 3px 0;
-  font-size: 30px;
-}
-
-.chapter-preview__chapter-index {
+span.chapter-preview__chapter-index {
   font-size: 14px;
   font-weight: 500;
   color: #48484a;
@@ -48,12 +46,12 @@
   justify-content: center;
   transform: rotate(-90deg);
   letter-spacing: 0.8px;
-  left: -67px;
+  left: -65px;
   height: 20px;
   width: 112px;
   top: 45px;
   background-color: #479226;
-  box-shadow: -5px 0 0 0 #00000020;
+  box-shadow: -3px 0 0 0 #d9d9d9;
   color: #f7f7f7;
   text-transform: uppercase;
   font-weight: bold;
@@ -82,7 +80,7 @@
 
   .chapter-preview__completion-indicator {
     height: 10px;
-    left: -62px;
+    left: -61px;
     top: 50px;
   }
 
@@ -92,6 +90,10 @@
 
   .chapter-preview {
     padding: 0 20px;
+  }
+
+  .chapter-preview.completed-chapter {
+    border-left: 10px solid #c0c0c0;
   }
 }
 

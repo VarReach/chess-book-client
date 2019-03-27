@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import BooksContext from '../../contexts/BooksContext';
 import BooksApiService from '../../services/books-api-service';
-import ChapterPreview from '../../components/ChapterPreview/ChapterPreview';
+import ChapterList from '../../components/ChapterList/ChapterList';
 import BookSelectMenu from '../../components/BookSelectMenu/BookSelectMenu';
 import './HomePage.css';
 
@@ -26,15 +26,8 @@ class ChaptersList extends Component {
           book.default_book && (defaultBook = book.id);
         });
         this.context.setBooks(booksObj, defaultBook);
-      }); 
-  }
-
-  renderChapters = () => {
-    return this.context.books[this.context.bookId].chapters.map((chapter, i) => {
-      return (
-        <ChapterPreview key={i} index={i} chapter={chapter} bookId={this.context.bookId}/>
-      )
-    });
+      })
+      .catch(this.context.setError);
   }
 
   toggleDropDown = (e) => {
@@ -54,6 +47,7 @@ class ChaptersList extends Component {
 
   render() {
     const bookId = this.context.bookId;
+    const chapters = (bookId && this.context.books[this.context.bookId].chapters) || [];
     return (
       <>
         <header role="banner" className="container home-page__header">
@@ -67,7 +61,7 @@ class ChaptersList extends Component {
           </div>
         </header>
         <section className="container">
-          {this.context.bookId && this.renderChapters()}
+          <ChapterList chapters={chapters}/>
         </section>
       </>
     );

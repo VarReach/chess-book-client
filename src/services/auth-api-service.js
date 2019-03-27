@@ -14,7 +14,7 @@ const AuthApiService = {
       .then(res => {
         return (!res.ok)
           ? res.json().then(e => Promise.reject(e))
-          : res.json()
+          : res.json();
       });
   },
   postLogin(credentials) {
@@ -38,7 +38,7 @@ const AuthApiService = {
           AuthApiService.postRefreshToken();
         });
         return res;
-      })
+      });
   },
   postUser(user) {
     const options = {
@@ -66,20 +66,38 @@ const AuthApiService = {
       .then(res => {
         return (!res.ok)
           ? res.json().then(e => Promise.reject(e))
-          : res.json()
+          : res.json();
       })
       .then(res => {
-        TokenService.saveAuthToken(res.authToken)
+        TokenService.saveAuthToken(res.authToken);
         TokenService.queueCallbackBeforeExpiry(() => {
-          AuthApiService.postRefreshToken()
+          AuthApiService.postRefreshToken();
         })
-        return res
+        return res;
       })
       .catch(err => {
-        console.log('refresh token request error')
-        console.error(err)
-      })
+        console.log('refresh token request error');
+        console.error(err);
+      });
   },
+  postCompletedChapter(chapterId) {
+    const options = {
+      method: 'POST',
+      headers: {
+        'authorization': `Bearer ${TokenService.getAuthToken()}`,
+      },
+    };
+    return fetch(`${config.API_ENDPOINT}/auth/users/completed_chapters/${chapterId}`, options)
+      .then(res => {
+        return (!res.ok)
+          ? res.json().then(e => Promise.reject(e))
+          : res.json();
+      })
+      .catch(err => {
+        console.log('refresh token request error');
+        console.error(err);
+      });
+  }
 }
 
 export default AuthApiService;
