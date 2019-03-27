@@ -96,6 +96,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
+  margin: 50px 0 70px;
 }
 
 .article__chapter-buttons-holder a, .article__chapter-buttons-holder button {
