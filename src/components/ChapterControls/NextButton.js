@@ -11,7 +11,11 @@ export default class NextButton extends Component {
         <Link
             className="article__chapter-controls"
             to={"/"}
-            onClick={(e) => this.props.handleOnClick(e, this.props.bookId, this.props.chapterIndex + 1)}
+            onClick={(e) => {
+                this.props.handleOnClick(e, this.props.bookId, this.props.chapterIndex + 1);
+                this.context.completeChapter(this.props.chapterId);
+              }
+            }
         >
           <i className='fas fa-angle-right'/>
         </Link>

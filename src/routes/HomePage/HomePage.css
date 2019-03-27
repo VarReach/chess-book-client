@@ -80,14 +80,14 @@
 
   .book-select__dropdown-menu {
     top: 90px;
-    right: 30px;
+    right: 10px;
   }
 
   .book-select__dropdown-menu:after {
     bottom: 100%;
     top: unset;
     left: unset;
-    right: 5px;
+    right: 25px;
     border-color: #00000000;
     border-bottom-color: #242831;
     /* border-width: 0 16px 8px 16px; */

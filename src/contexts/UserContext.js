@@ -69,19 +69,26 @@ export class UserProvider extends Component {
     this.setState({ user });
   }
   
-  clearUser = (user) => {
+  clearUser = () => {
     this.setState({ user: {} });
   }
 
   completeChapter = (chapterId) => {
+    console.log(chapterId);
     if (TokenService.hasAuthToken()) {
-      if (this.state.user.completed_chapters && this.state.user.completed_chapters.findIndex(cc => cc.id === chapterId) !== -1) {
+      const cc = this.state.user.completed_chapters;
+      if (cc && cc.length > 0 && cc.findIndex(cc => cc.id === chapterId) !== -1) {
         return;
       };
 
       AuthApiService.postCompletedChapter(chapterId)
         .then(cc => {
-          const newUser = {...this.state.user, completed_chapters: [...this.state.user.completed_chapters, cc ] };
+          const ccArr = this.state.user.completed_chapters
+            ? [...this.state.user.completed_chapters, cc]
+            : [ cc ];
+          console.log(ccArr);
+          const newUser = {...this.state.user, completed_chapters: ccArr };
+          console.log(newUser);
           this.setState({ user: newUser });
         })
         .catch(err => {

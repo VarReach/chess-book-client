@@ -240,7 +240,7 @@ export default class ChapterPage extends Component {
     }
   }
 
-  getChapterControls(chapterIndex) {
+  getChapterControls(chapterIndex, chapterId) {
       const bookId = this.props.match.url.split('/')[2];
       return (
         <div className="article__chapter-buttons-holder">
@@ -258,7 +258,7 @@ export default class ChapterPage extends Component {
                 onClick={(e) => this.handleControlsOnClick(e, bookId, chapterIndex - 1)}>
                   <i className='fas fa-angle-left'/>
               </Link>}
-          <NextButton bookId={bookId} chapterIndex={chapterIndex} handleOnClick={this.handleControlsOnClick} />
+          <NextButton bookId={bookId} chapterId={chapterId} chapterIndex={chapterIndex} handleOnClick={this.handleControlsOnClick} />
         </div>
       );
   }
@@ -274,7 +274,7 @@ export default class ChapterPage extends Component {
             <h1>{chapter.title}</h1>
           </header>
         {this.renderHTML()}
-        {(chapterIndex && chapter && this.context.lastChapterAvailable) && this.getChapterControls(chapterIndex)}
+        {(chapterIndex && chapter && this.context.lastChapterAvailable) && this.getChapterControls(chapterIndex, chapter.id)}
         </article>
       </>
       
