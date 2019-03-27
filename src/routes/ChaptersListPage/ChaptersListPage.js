@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom';
 import ChaptersContext from '../../contexts/ChaptersContext';
 import BooksApiService from '../../services/books-api-service';
 import ChapterPreview from '../../components/ChapterPreview/ChapterPreview';

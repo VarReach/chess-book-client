@@ -1,0 +1,126 @@
+.article__plugin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.article__header {
+  margin: 60px 0 85px;
+}
+
+.article__header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.article__header span {
+  font-size: 14px;
+  color: #48484a;
+  font-weight: 500;
+}
+
+.article__chessboard-holder {
+  margin-bottom: 10px;
+}
+
+.article__caption {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 24px;
+  color: #666667;
+}
+
+.article__source {
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 14px;
+  color: #7a7a7a;
+}
+.article-container p, .article-container li, .article-container a, .article-container h2 {
+  color: #242425;
+}
+
+.article-container h2 {
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.article-container p, .article-container li {
+  font-size: 18px;
+}
+
+.article-container li {
+  line-height: 22px;
+}
+
+.article-container p {
+  line-height: 29px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.article-container figure {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.article-container blockquote {
+  color: #48484a;
+  line-height: 22px;
+  padding: 10px 10px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.article-container blockquote:before {
+  font-family: 'Libre Baskerville', serif;
+  content: open-quote;
+  font-size: 36px;
+  color: #666667;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+.article-container a {
+  color: #242425;
+}
+
+.article-container a:hover {
+  color: #294985;
+}
+
+@media only screen and (max-width: 1300px) {
+  .article-container p, .article-container li {
+    font-size: 16px;
+  }
+
+  .article__caption {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .article__header h1 {
+    font-size: 28px;
+  }
+
+  .article__header span {
+    font-size: 12px;
+  }
+
+  .article-container p, .article-container li {
+    font-size: 14px;
+  }
+
+  .article__caption {
+    font-size: 12px;
+  }
+
+  .article-container blockquote {
+    font-size: 12px;
+    margin: 12px 10px;
+  }
+}
+

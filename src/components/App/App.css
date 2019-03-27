@@ -9,6 +9,12 @@ body {
   margin: 0 auto;
 }
 
+.article-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 i.fas {
   margin: 0 5px;
 }
@@ -72,6 +78,10 @@ h3 {
 
 @media only screen and (max-width: 1300px) {
   .container {
+    padding: 0 20px;
+  }
+
+  .article-container {
     padding: 0 20px;
   }
 }

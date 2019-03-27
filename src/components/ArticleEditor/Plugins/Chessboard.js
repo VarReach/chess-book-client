@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-import ChessBoard from 'chessboardjsx';
 import insertDataBlock from 'megadraft/lib/insertDataBlock';
-
-class Chessboard extends Component {
-  render() {
-    return <ChessBoard position={this.props.data.position} draggable={false} calcWidth={() => window.innerWidth*0.50}/>
-  }
-}
+import Chessboard from '../Components/Chessboard';
 
 class ChessButton extends Component {
   onClick = (e) => {
     e.preventDefault();
     const FENstring = window.prompt('Enter a FEN string');
-    const data = {"type": "chessboard", "position": FENstring};
+    const caption = window.prompt('Enter a caption');
+    const data = {"type": "chessboard", "position": FENstring, caption};
     this.props.onChange(insertDataBlock(this.props.editorState, data));
   }
 
