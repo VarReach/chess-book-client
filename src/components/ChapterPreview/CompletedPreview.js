@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './ChapterPreview.css';
 
-//placeholder method from previous implementation, eventually should move into the the ChapterPreview component
 function CompletedPreview(props){
   return (
     <>

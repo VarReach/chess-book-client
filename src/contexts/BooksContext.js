@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 const BooksContext = React.createContext({
+  bookId: null,
   books: {},
   error: null,
   setBooks: () => {},
@@ -14,6 +15,7 @@ export class BooksProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bookId: null,
       books: {},
       error: null,
       setBooks: this.setBooks,
@@ -22,8 +24,11 @@ export class BooksProvider extends Component {
     };
   }
 
-  setBooks = (books, bookId) => {
-    this.setState({ books }, () => this.setBookId(bookId));
+  setBooks = (books, bookId, fn) => {
+    this.setState({ books }, () => {
+      this.setBookId(bookId, fn);
+      fn && fn();
+    });
   }
 
   setBookId = (bookId) => {

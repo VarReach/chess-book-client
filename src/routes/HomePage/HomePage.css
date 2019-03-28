@@ -36,6 +36,7 @@
 
 .home-page__header-book-button:hover {
   cursor: pointer;
+  color: #294985;
 }
 
 .home-page__header-book-button:hover, .home-page__header-book-button:focus {

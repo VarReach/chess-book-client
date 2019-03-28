@@ -10,7 +10,7 @@ const AuthApiService = {
         'authorization': `Bearer ${TokenService.getAuthToken()}`,
       },
     };
-    return fetch(`${config.API_ENDPOINT}/auth/users`, options)
+    return fetch(`${config.API_ENDPOINT}/users`, options)
       .then(res => {
         return (!res.ok)
           ? res.json().then(e => Promise.reject(e))
@@ -87,7 +87,7 @@ const AuthApiService = {
         'authorization': `Bearer ${TokenService.getAuthToken()}`,
       },
     };
-    return fetch(`${config.API_ENDPOINT}/auth/users/completed_chapters/${chapterId}`, options)
+    return fetch(`${config.API_ENDPOINT}/users/completed_chapters/${chapterId}`, options)
       .then(res => {
         return (!res.ok)
           ? res.json().then(e => Promise.reject(e))

@@ -26,14 +26,10 @@ export class ChapterProvider extends Component {
     };
   }
 
-  getChapter = (bookId, chapterIndex) => {
-
-  }
-
-  setChapter = (chapter) => {
-    let newState = { chapter, lastChapterAvailable: chapter.last_chapter_available };
+  setChapter = (chapter, fn) => {
+    let newState = { chapter, lastChapterAvailable: chapter.last_chapter_available, error: null };
     delete newState.chapter.last_chapter_available;
-    this.setState(newState);
+    this.setState(newState, () => { fn && fn() });
   }
 
   clearChapter = () => {

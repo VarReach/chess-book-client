@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotefulForm component renders a ChapterPreview by default 1`] = `
+<Link
+  className="chapter-preview"
+  replace={false}
+  to="/book/undefined/chapter/NaN"
+>
+  <div
+    className="chapter-preview__chapter-details"
+  >
+    <span
+      className="chapter-preview__chapter-index"
+    >
+      Chapter NaN
+    </span>
+    <h2 />
+  </div>
+</Link>
+`;
+
+exports[`NotefulForm component renders the ChapterPreview given props 1`] = `
+<Link
+  className="chapter-preview"
+  replace={false}
+  to="/book/undefined/chapter/2"
+>
+  <div
+    className="chapter-preview__chapter-details"
+  >
+    <span
+      className="chapter-preview__chapter-index"
+    >
+      Chapter 2
+    </span>
+    <h2>
+      Chapter title
+    </h2>
+  </div>
+</Link>
+`;

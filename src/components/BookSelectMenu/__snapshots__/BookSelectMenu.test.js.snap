@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookSelectMenu component renders the dropdown when state.showDropDown is true 1`] = `
+<div
+  className="dropdown book-select__dropdown-menu"
+>
+  <div
+    id="book-select__dropdown-scroll"
+  >
+    <ul />
+  </div>
+</div>
+`;

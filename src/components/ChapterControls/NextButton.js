@@ -7,19 +7,17 @@ export default class NextButton extends Component {
 
   render() {
     return (
-      <>
-        <Link
-            className="article__chapter-controls"
-            to={"/"}
-            onClick={(e) => {
-                this.props.handleOnClick(e, this.props.bookId, this.props.chapterIndex + 1);
-                this.context.completeChapter(this.props.chapterId);
-              }
+      <Link
+          className="article__chapter-next-button"
+          to={"/"}
+          onClick={(e) => {
+              this.props.handleOnClick(e, this.props.bookId, this.props.chapterIndex + 1);
+              this.context.completeChapter(this.props.chapterId);
             }
-        >
-          <i className='fas fa-angle-right'/>
-        </Link>
-      </>
+          }
+      >
+        <i className='fas fa-angle-right'/>
+      </Link>
     )
   }
 }

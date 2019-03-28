@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChapterControls component renders the controls 1`] = `
+<div
+  className="article__chapter-controls"
+>
+  <div
+    className="article__chapter-buttons-holder"
+  >
+    <Link
+      onClick={[Function]}
+      replace={false}
+      to="/book/undefined/chapter/1"
+    >
+      <i
+        className="fas fa-angle-double-left"
+      />
+    </Link>
+    <Link
+      onClick={[Function]}
+      replace={false}
+      to="/book/undefined/chapter/1"
+    >
+      <i
+        className="fas fa-angle-left"
+      />
+    </Link>
+    <NextButton />
+  </div>
+</div>
+`;
+
+exports[`ChapterControls component renders the controls given props 1`] = `
+<div
+  className="article__chapter-controls"
+>
+  <div
+    className="article__chapter-buttons-holder"
+  >
+    <button
+      disabled={true}
+    >
+      <i
+        className="fas fa-angle-double-left"
+      />
+    </button>
+    <button
+      disabled={true}
+    >
+      <i
+        className="fas fa-angle-left"
+      />
+    </button>
+    <NextButton
+      bookId={1}
+      chapterId={1}
+      chapterIndex={1}
+    />
+  </div>
+</div>
+`;

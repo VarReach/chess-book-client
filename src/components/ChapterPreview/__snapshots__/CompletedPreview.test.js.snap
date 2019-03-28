@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotefulForm component renders a CompletedPreview by default 1`] = `
+<Fragment>
+  <div
+    className="chapter-preview__completion-indicator"
+  >
+    <span>
+      completed
+    </span>
+  </div>
+  <div
+    className="chapter-preview__completed-date"
+  >
+    <span />
+  </div>
+</Fragment>
+`;
+
+exports[`NotefulForm component renders the CompletedPreview given props 1`] = `
+<Fragment>
+  <div
+    className="chapter-preview__completion-indicator"
+  >
+    <span>
+      completed
+    </span>
+  </div>
+  <div
+    className="chapter-preview__completed-date"
+  >
+    <span>
+      this is a date
+    </span>
+  </div>
+</Fragment>
+`;

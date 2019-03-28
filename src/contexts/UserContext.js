@@ -74,7 +74,6 @@ export class UserProvider extends Component {
   }
 
   completeChapter = (chapterId) => {
-    console.log(chapterId);
     if (TokenService.hasAuthToken()) {
       const cc = this.state.user.completed_chapters;
       if (cc && cc.length > 0 && cc.findIndex(cc => cc.id === chapterId) !== -1) {
@@ -86,9 +85,7 @@ export class UserProvider extends Component {
           const ccArr = this.state.user.completed_chapters
             ? [...this.state.user.completed_chapters, cc]
             : [ cc ];
-          console.log(ccArr);
           const newUser = {...this.state.user, completed_chapters: ccArr };
-          console.log(newUser);
           this.setState({ user: newUser });
         })
         .catch(err => {

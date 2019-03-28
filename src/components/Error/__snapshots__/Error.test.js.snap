@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginForm component renders the error div given props 1`] = `
+<div
+  className="error"
+>
+  <span>
+    Error message
+  </span>
+  <button>
+    <i
+      className="fas fa-times"
+    />
+  </button>
+</div>
+`;
+
+exports[`LoginForm component renders the form by default 1`] = `
+<div
+  className="error"
+>
+  <span />
+  <button>
+    <i
+      className="fas fa-times"
+    />
+  </button>
+</div>
+`;

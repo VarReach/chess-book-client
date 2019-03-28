@@ -1,0 +1,141 @@
+.aside-container {
+  max-width: 1000px;
+  margin: 50px auto;
+  width: 100%;
+}
+
+.landing-info {
+  position: relative;
+  padding: 0 20px;
+  border: 1px solid #c0c0c0;
+  background-color: #f7f7f7;
+  box-shadow: 3px 4px 0 0 #00000014;
+  color: #242425;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.landing-info button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border-radius: 5px;
+  height:20px;
+  width: 30px;
+}
+
+.landing-info button:hover {
+  cursor: pointer;
+  background-color: #c0c0c0;
+  color: #f7f7f7;
+}
+
+.landing-info__content-holder {
+  max-width: 800px;
+  width: 100%;
+}
+
+.landing-info__title {
+  font-size: 24px;
+  text-align: center;
+  margin: 30px 0 10px;
+}
+
+.landing-info__sub-title {
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  margin: 5px 0 20px;
+}
+
+.landing-info__section-title, .landing-info__footer-account-info {
+  border-top: 1px solid #c0c0c0;
+  border-bottom: 1px solid #c0c0c0;
+  text-align: center;
+}
+
+.landing-info__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 740px;
+  width: 80%;
+  margin: 0 auto;
+  height: 28px;
+
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.landing-info p {
+  line-height: 28px;
+}
+
+.landing-info section p {
+  font-size: 14px;
+}
+
+.landing-info section {
+  margin-bottom: 30px;
+}
+
+.landing-info__footer {
+  width: 80%;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.landing-info__footer p {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.landing-info__footer ul span {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.landing-info__footer h5 {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.landing-info__footer-account-info ul {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-info__footer-account-info li {
+  display: inline-block;
+  margin: 0 20px 20px;
+}
+
+.landing-info__footer-account-info li p, .landing-info__footer-account-info li h5 {
+  margin: 0;
+}
+
+.landing-info__reset-info {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 1300px) {
+  .aside-container {
+    padding: 0 20px;
+  }
+}

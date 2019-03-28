@@ -18,8 +18,12 @@ class CompletedPreview extends Component {
   }
 
   renderChapters = () => {
-    const { completed_chapters } = this.context.user;
-    const completedChapters = completed_chapters ? completed_chapters.map(cc => cc.id) : null;
+    let completedChapters;
+    let completed_chapters;
+    if (this.context && this.context.user) {
+      completed_chapters = this.context.user.completed_chapters;
+      completedChapters = completed_chapters ? completed_chapters.map(cc => cc.id) : null;
+    }
     return this.props.chapters.map((chapter, i) => {
       const date = this.getCompletedChapterIds(chapter.id, completedChapters, completed_chapters);
       return (
@@ -30,9 +34,9 @@ class CompletedPreview extends Component {
 
   render() {
     return (
-      <>
-        {this.renderChapters()}
-      </>
+      <section className="container">
+        {this.props.chapters && this.renderChapters()}
+      </section>
     )
   }
 }

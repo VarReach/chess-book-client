@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage tests renders given context 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "bookId": 1,
+      "books": Object {
+        "1": Object {
+          "blurb": "Testing",
+          "chapter_order": null,
+          "chapters": null,
+          "default_book": true,
+          "id": 1,
+          "title": "Testing",
+        },
+      },
+    }
+  }
+>
+  <ChaptersList />
+</ContextProvider>
+`;

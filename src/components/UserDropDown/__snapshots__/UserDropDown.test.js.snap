@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserDropDown component renders the dropdown when state.showDropDown is true 1`] = `
+<div
+  className="dropdown"
+  id="app__header-user-dropdown"
+>
+  <ul>
+    <li>
+      <Link
+        replace={false}
+        to="/login"
+      >
+        <a
+          href="/login"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-sign-in-alt"
+          />
+          Log in
+        </a>
+      </Link>
+    </li>
+    <li>
+      <Link
+        replace={false}
+        to="/register"
+      >
+        <a
+          href="/register"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-user-plus"
+          />
+          Sign up
+        </a>
+      </Link>
+    </li>
+  </ul>
+</div>
+`;

@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component no dropdown by default 1`] = `null`;
+
+exports[`Header component no editor link when user doesn't have permissions 1`] = `null`;
+
+exports[`Header component renders the complete header 1`] = `
+<nav
+  className="app__header"
+  role="navigation"
+>
+  <div
+    className="container app__header-container"
+  >
+    <Link
+      className="app__header-title"
+      replace={false}
+      to="/"
+    >
+      <img
+        alt="Chess Piece: Rook"
+        src="ChessBlogLogo.png"
+      />
+      <span>
+        ChessBook
+      </span>
+    </Link>
+    <div
+      className="app__header-nav"
+    >
+      <div
+        className="app__header-nav-user"
+      >
+        <button
+          className="app__header-nav-user-button"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-user-slash"
+          />
+          <span>
+            Guest
+          </span>
+          <i
+            className="fas fa-caret-down"
+          />
+        </button>
+        <DropDown />
+      </div>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`Header component shows dropdown on button click 1`] = `
+<div
+  className="dropdown"
+  id="app__header-user-dropdown"
+>
+  <ul>
+    <li>
+      <Link
+        replace={false}
+        to="/login"
+      >
+        <a
+          href="/login"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-sign-in-alt"
+          />
+          Log in
+        </a>
+      </Link>
+    </li>
+    <li>
+      <Link
+        replace={false}
+        to="/register"
+      >
+        <a
+          href="/register"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-user-plus"
+          />
+          Sign up
+        </a>
+      </Link>
+    </li>
+  </ul>
+</div>
+`;

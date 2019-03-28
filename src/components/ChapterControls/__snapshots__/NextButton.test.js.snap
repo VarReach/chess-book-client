@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NextButton component renders the button 1`] = `
+<Link
+  className="article__chapter-next-button"
+  onClick={[Function]}
+  replace={false}
+  to="/"
+>
+  <i
+    className="fas fa-angle-right"
+  />
+</Link>
+`;

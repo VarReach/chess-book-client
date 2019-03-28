@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading component render the error view when an error is in props 1`] = `""`;
+
+exports[`Loading component renders the component 1`] = `""`;
+
+exports[`Loading component renders the loading animation after 1 second 1`] = `
+<div
+  className="spinner"
+>
+  <div
+    className="rect1"
+  />
+  <div
+    className="rect2"
+  />
+  <div
+    className="rect3"
+  />
+  <div
+    className="rect4"
+  />
+  <div
+    className="rect5"
+  />
+</div>
+`;

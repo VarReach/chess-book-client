@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import AuthApiService from '../../services/auth-api-service';
+import { Link } from 'react-router-dom';
+import Error from '../../components/Error/Error';
 
 export default class LoginForm extends Component {
   static defaultProps = {
@@ -8,57 +10,70 @@ export default class LoginForm extends Component {
 
   state = { error: null }
 
-  handleSubmitJwtAuth = ev => {
-    ev.preventDefault();
+  handleSubmit = (e) => {
+    e.preventDefault();
     this.setState({ error: null });
-    const { user_name, password } = ev.target;
+    const { user_name, password } = e.target;
 
     AuthApiService.postLogin({
       user_name: user_name.value,
       password: password.value,
     })
-      .then(resp => {
+      .then(() => {
         user_name.value = '';
         password.value = '';
         this.props.onLoginSuccess();
       })
       .catch(resp => {
+        if (!resp.error) {
+          this.setState({ error: 'Unable to connect to server' });
+          return;
+        }
         this.setState({ error: resp.error });
       });
+    user_name.value = '';
+    password.value = '';
+  }
+
+  resetError = (e) => {
+    e.preventDefault();
+    this.setState({ error: null });
   }
 
   render() {
     const { error } = this.state
     return (
       <form
-        className='LoginForm'
-        onSubmit={this.handleSubmitJwtAuth}
+        className="auth-form"
+        onSubmit={this.handleSubmit}
       >
-        <div role='alert'>
-          {error && <p className='red'>{error}</p>}
-        </div>
-        <div className='user_name'>
-          <label htmlFor='LoginForm__user_name'>
+        {error && <Error error={error} hideError={this.resetError}/>}
+        <div className="auth-form__input-holder">
+          <label htmlFor="auth-form__user-name-input">
             User name
           </label>
           <input
             required
-            name='user_name'
-            id='LoginForm__user_name'/>
+            name="user_name"
+            id="login-form__user-name-input"/>
         </div>
-        <div className='password'>
-          <label htmlFor='LoginForm__password'>
+        <div className="auth-form__input-holder">
+          <label htmlFor="auth-form__password">
             Password
           </label>
-          <input
+          <input className="auth-form__password-input"
             required
-            name='password'
-            type='password'
-            id='LoginForm__password'/>
+            name="password"
+            type="password"
+            id="login-form__password"/>
         </div>
-        <button type='submit'>
-          Login
+        <button type="submit" className="auth-form__auth-button">
+          Log in
         </button>
+        <div className="auth-form__register-holder">
+          <span>new?</span>
+        </div>
+        <Link to="/register">Create an account</Link>
       </form>
     )
   }

@@ -72,14 +72,14 @@
   background-color: #4d5b75;
 }
 
-.app__header-user-dropdown {
+#app__header-user-dropdown {
   width: 140px;
   height: 100px;
   top: 50px;
   right: 0;
 }
 
-.app__header-user-dropdown:after {
+#app__header-user-dropdown:after {
 	bottom: 100%;
 	right: 22px;
 	border: solid transparent;
@@ -94,7 +94,7 @@
 	margin-left: -20px;
 }
 
-.app__header-user-dropdown a {
+#app__header-user-dropdown a {
   margin: 0;
   display: inline-block;
   width: 100%;
@@ -102,7 +102,7 @@
   font-size: 12px;
 }
 
-.app__header-user-dropdown a:hover, .app__header-user-dropdown a:focus {
+#app__header-user-dropdown a:hover, #app__header-user-dropdown a:focus {
   background-color: #363e53;
   outline: none;
 } 

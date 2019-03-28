@@ -6,25 +6,36 @@ import parse from 'html-react-parser';
 import Chessboard from '../../components/ArticleEditor/Components/Chessboard';
 import ChapterApiService from '../../services/chapter-api-service';
 import { Link } from 'react-router-dom';
-import NextButton from '../../components/ChapterControls/NextButton';
-import { Redirect } from 'react-router-dom';
+import ChapterControls from '../../components/ChapterControls/ChapterControls';
+import Loading from '../../components/Loading/Loading';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import './ChapterPage.css';
 
 export default class ChapterPage extends Component {
   state = {
-    renderNotFound: false,
+    loading: true,
+    chapterNotFound: false,
   }
 
   static contextType = ChapterContext;
+  static defaultProps = {
+    match: {
+      url: '',
+      params: {
+        chapterIndex: '',
+      }
+    },
+  };
 
   componentDidMount() {
     const { bookId, chapterIndex } = this.props.match.params;
     ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
-      .then(this.context.setChapter)
+      .then((chapter) => {
+        this.context.setChapter(chapter, this.finishLoading);
+      })
       .catch(err => {
-        if (err.error.includes('doesn\'t exist')) {
-          this.setState({ renderNotFound: true });
+        if (err.error && err.error.includes('doesn\'t exist')) {
+          this.setState({ chapterNotFound: true, loading: false });
         }
         this.context.setError(err);
       });
@@ -32,6 +43,10 @@ export default class ChapterPage extends Component {
 
   componentWillUnmount() {
     this.context.clearChapter();
+  }
+
+  finishLoading = () => {
+    this.setState({ loading: false });
   }
 
   checkIfChessboard = (block) => {
@@ -89,45 +104,28 @@ export default class ChapterPage extends Component {
     if (chapterIndex > this.context.lastChapterAvailable) {
       this.props.history.push('/');
     } else {
-      ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
-        .then((chapter) => {
-          this.context.setChapter(chapter);
-          this.props.history.push(`/book/${bookId}/chapter/${chapterIndex}`);
-        })
-        .catch(err => {
-          console.error(err);
-          this.context.setError(err);
-        });
+      this.setState({ loading: true }, () => {
+        ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
+          .then((chapter) => {
+            this.context.setChapter(chapter, this.finishLoading);
+            this.props.history.push(`/book/${bookId}/chapter/${chapterIndex}`);
+          })
+          .catch(err => {
+            console.error(err);
+            this.context.setError(err);
+          });
+      });
     }
   }
 
-  getChapterControls(chapterIndex, chapterId) {
-      const bookId = this.props.match.url.split('/')[2];
-      return (
-        <div className="article__chapter-buttons-holder">
-          {chapterIndex === 1
-            ? <button disabled={true}><i className='fas fa-angle-double-left'/></button>
-            : <Link 
-                to={`/book/${bookId}/chapter/1`} 
-                onClick={(e) => this.handleControlsOnClick(e, bookId, 1)}>
-                  <i className='fas fa-angle-double-left'/>
-              </Link>}
-          {chapterIndex === 1
-            ? <button disabled={true}><i className='fas fa-angle-left'/></button>
-            : <Link 
-                to={`/book/${bookId}/chapter/1`} 
-                onClick={(e) => this.handleControlsOnClick(e, bookId, chapterIndex - 1)}>
-                  <i className='fas fa-angle-left'/>
-              </Link>}
-          <NextButton bookId={bookId} chapterId={chapterId} chapterIndex={chapterIndex} handleOnClick={this.handleControlsOnClick} />
-        </div>
-      );
-  }
-
   render() {
+    const bookId = this.props.match.url.split('/')[2];
     const chapter = this.context.chapter;
     const chapterIndex = parseInt(this.props.match.params.chapterIndex);
-    if (this.state.renderNotFound) {
+    if (this.state.loading) {
+      return <Loading status={this.context.error}/>;
+    }
+    if (this.state.chapterNotFound) {
       return <NotFoundPage />
     }
     return (
@@ -138,7 +136,13 @@ export default class ChapterPage extends Component {
             <h1>{chapter.title}</h1>
           </header>
         {this.renderHTML()}
-        {(chapterIndex && chapter && this.context.lastChapterAvailable) && this.getChapterControls(chapterIndex, chapter.id)}
+        {(chapterIndex && chapter && this.context.lastChapterAvailable) && 
+          <ChapterControls 
+            chapterId={chapter.id} 
+            chapterIndex={chapterIndex} 
+            bookId={bookId}
+            handleControlsOnClick={this.handleControlsOnClick}
+          />}
         </article>
       </>
       

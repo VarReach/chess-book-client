@@ -4,7 +4,6 @@ import CompletedPreview from './CompletedPreview';
 import './ChapterPreview.css';
 import BooksContext from '../../contexts/BooksContext';
 
-
 class ChapterPreview extends Component {
   static contextType = BooksContext;
 
@@ -16,7 +15,7 @@ class ChapterPreview extends Component {
         {this.props.date && <CompletedPreview chapterId={chapter.id} date={this.props.date}/>}
         <div className="chapter-preview__chapter-details">
           <span className="chapter-preview__chapter-index">{`Chapter ${index+1}`}</span>
-          <h2>{chapter.title}</h2>
+          <h2>{chapter && chapter.title}</h2>
         </div>
       </Link>
     );

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChapterList component renders the list 1`] = `
+<section
+  className="container"
+/>
+`;
+
+exports[`ChapterList component renders the list given props 1`] = `
+<section
+  className="container"
+>
+  <ChapterPreview
+    chapter={
+      Object {
+        "title": "chapter 1 title",
+      }
+    }
+    index={0}
+    key="0"
+  />
+  <ChapterPreview
+    chapter={
+      Object {
+        "title": "chapter 2 title",
+      }
+    }
+    index={1}
+    key="1"
+  />
+</section>
+`;

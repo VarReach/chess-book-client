@@ -3,6 +3,14 @@ import BooksContext from '../../contexts/BooksContext';
 import './BookSelectMenu.css';
 
 class BookSelectMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDropDown: false,
+    }
+    this.dropDown = React.createRef();
+  }
+
   static contextType = BooksContext;
 
   renderBooks = () => {
@@ -21,16 +29,33 @@ class BookSelectMenu extends Component {
     return books;
   }
 
+  toggleDropDown = (e) => {
+    if (e && this.dropDown.current.contains(e.target)) {
+      return;
+    }
+    this.state.showDropDown ? this.hideDropDown() : this.showDropDown();
+  }
+
+  showDropDown = () => {
+    this.setState({ showDropDown: true }, () => {document.addEventListener('click', this.hideDropDown)});
+  }
+
+  hideDropDown = () => {
+    this.setState({ showDropDown: false }, () => {document.removeEventListener('click', this.hideDropDown)});
+  }
+
   handleOnClick = (bookId) => {
     this.context.setBookId(bookId);
   }
 
   render() {
     return (
-      <div id="book-select__dropdown-scroll">
-        <ul>
-          {this.renderBooks()}
-        </ul>
+      <div className={"dropdown book-select__dropdown-menu" + (!this.state.showDropDown ? ' hidden' : '')} ref={this.dropDown}>
+        <div id="book-select__dropdown-scroll">
+          <ul>
+            {this.renderBooks()}
+          </ul>
+        </div>
       </div>
     )
   }

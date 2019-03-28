@@ -21,6 +21,6 @@ export default class ErrorPage extends Component {
         </div>
       );
     }
-    return this.props.children;
+    return this.props.children || null;
   }
 }

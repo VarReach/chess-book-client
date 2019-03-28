@@ -19,7 +19,7 @@ const TokenService = {
     return !!TokenService.getAuthToken()
   },
   hasPermissions() {
-    return TokenService.parseJwt(TokenService.getAuthToken()).permissions || false;
+    return TokenService.parseJwt(TokenService.getAuthToken()).perms || false;
   },
   makeBasicAuthToken(userName, password) {
     return window.btoa(`${userName}:${password}`)
