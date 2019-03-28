@@ -7,7 +7,7 @@ export default class ChapterControls extends Component {
   static contextType = UserContext;
 
   state = {
-    showScrollButton: false,
+    showScrollButton: null,
   }
 
   componentDidMount = () => {
@@ -22,7 +22,7 @@ export default class ChapterControls extends Component {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20){
       this.setState({ showScrollButton: true });
     } else {
-      this.setState({ showScrollButton: false });
+      this.setState({ showScrollButton: null });
     }
   }
 

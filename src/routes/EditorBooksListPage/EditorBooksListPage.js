@@ -8,7 +8,7 @@ class EditorChapterPage extends Component {
     super(props);
     this.state = { 
       books: [],
-      blockNavigation: false,
+      blockNavigation: null,
     };
   }
 

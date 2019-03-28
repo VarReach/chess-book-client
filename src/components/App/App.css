@@ -48,8 +48,11 @@ body {
 
 .landing-info-button:hover {
   cursor: pointer;
-  outline: 3px solid #00000054;
   color: #294985;
+}
+
+.landing-info-button:hover, .landing-info-button:focus {
+  outline: 3px solid #00000054;
 }
 
 i.fas {

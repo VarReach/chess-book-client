@@ -6,6 +6,7 @@ export default function LandingInfo(props) {
     <div className="document-blackout">
       <aside className="aside-container">
         <div className="landing-info">
+          <button onClick={props.handleHideLandingInfo}><i className="fas fa-times"/></button>
           <header>
             <h2 className="landing-info__title">Welcome to Chess-Book</h2>
             <h3 className="landing-info__sub-title">A demo of a web-app developed to host the eventual chessbook(s) of my Father.</h3>
@@ -13,8 +14,8 @@ export default function LandingInfo(props) {
           <div className="landing-info__content-holder">
             <section>
               <h4 className="landing-info__section-title">Basic use</h4>
-              <p>No registration is required to use the app. However, registering and logging in will allow the app to track what chapters you've finished, and allow you to filter the chapters list on the home page by completion.</p>
-              <p>The app also supports multiple books (should the need arise). You can navigate this list by pressing the button to the right of the book title on the home page.</p>
+              <p>No registration is required to use the app. However, registering and logging in will allow the app to track what chapters you've finished, and allow you to filter the chapters list on the home page by completion status.</p>
+              <p>The app also supports multiple books — should the need arise. You can navigate this list — if it exists — by pressing the button to the right of the book title on the home page.</p>
             </section>
             <section>
               <h4 className="landing-info__section-title">Advanced use</h4>
@@ -40,7 +41,6 @@ export default function LandingInfo(props) {
               <span className="landing-info__reset-info">For the demo only, any changes made are reset every 24 hours.</span>
             </footer>
           </div>
-          <button onClick={props.handleHideLandingInfo}><i className="fas fa-times"/></button>
         </div>
       </aside>
     </div>

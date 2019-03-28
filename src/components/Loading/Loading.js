@@ -6,7 +6,7 @@ let timeout;
 
 export default class Loading extends Component {
   state = {
-    timein: false,
+    timein: null,
   }
 
   componentDidMount() {

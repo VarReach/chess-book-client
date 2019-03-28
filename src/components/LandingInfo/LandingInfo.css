@@ -30,6 +30,9 @@
 
 .landing-info button:hover {
   cursor: pointer;
+}
+
+.landing-info button:hover, .landing-info button:focus {
   background-color: #c0c0c0;
   color: #f7f7f7;
 }

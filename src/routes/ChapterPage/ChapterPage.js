@@ -14,7 +14,7 @@ import './ChapterPage.css';
 export default class ChapterPage extends Component {
   state = {
     loading: true,
-    chapterNotFound: false,
+    chapterNotFound: null,
   }
 
   static contextType = ChapterContext;
@@ -35,7 +35,7 @@ export default class ChapterPage extends Component {
       })
       .catch(err => {
         if (err.error && err.error.includes('doesn\'t exist')) {
-          this.setState({ chapterNotFound: true, loading: false });
+          this.setState({ chapterNotFound: true, loading: null });
         }
         this.context.setError(err);
       });
@@ -46,7 +46,7 @@ export default class ChapterPage extends Component {
   }
 
   finishLoading = () => {
-    this.setState({ loading: false });
+    this.setState({ loading: null });
   }
 
   checkIfChessboard = (block) => {
@@ -102,7 +102,7 @@ export default class ChapterPage extends Component {
   handleControlsOnClick = (e, bookId, chapterIndex) => {
     e.preventDefault();
     if (chapterIndex > this.context.lastChapterAvailable) {
-      this.props.history.push('/');
+      this.props.history.push(`/?book=${bookId}`);
     } else {
       this.setState({ loading: true }, () => {
         ChapterApiService.getChapterByBookIdAndChapterIndex(bookId, chapterIndex)
@@ -132,7 +132,7 @@ export default class ChapterPage extends Component {
       <>
         <article className="article-container">
           <header className="article__header">
-            <span>{chapter.book_title} | Chapter {chapterIndex}</span>
+            <span><Link to={`/?book=${bookId}`}>{chapter.book_title}</Link> | Chapter {chapterIndex}</span>
             <h1>{chapter.title}</h1>
           </header>
         {this.renderHTML()}

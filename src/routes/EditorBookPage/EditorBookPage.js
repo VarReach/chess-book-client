@@ -9,12 +9,13 @@ import NewChapterForm from '../../components/Editor/NewChapterForm/NewChapterFor
 import EditChapterForm from '../../components/Editor/EditChapterForm/EditChapterForm';
 import helpers from '../../helpers/misc-helpers';
 import uuid from 'uuid/v4';
+import { ninvoke } from 'q';
 
 //holds any changes made
 let changes = {
   deletions: [],
   creations: [],
-  newPositions: false, //incase the user moves all published chapters out
+  newPositions: null, //incase the user moves all published chapters out
   positions: [],
   titles: {},
 };
@@ -26,10 +27,10 @@ class ChaptersEditorPage extends Component {
     book: {},
     columns: {},
     chapterOrder: [],
-    fetching: false,
+    fetching: null,
     editChapterForm: null,
-    newChapterForm: false,
-    blockNavigation: false,
+    newChapterForm: null,
+    blockNavigation: null,
   }
 
   static contextType = EditorBookContext;
@@ -126,7 +127,7 @@ class ChaptersEditorPage extends Component {
   }
 
   hideNewChapterForm = () => {
-    this.setState({ newChapterForm: false });
+    this.setState({ newChapterForm: null });
   }
 
   //#====================================================#
@@ -277,7 +278,7 @@ class ChaptersEditorPage extends Component {
             //get updated DOM, reset the changes object and state 
             .then(() => {
               this.resetChanges();
-              this.setState({ fetching: false });
+              this.setState({ fetching: null });
             })
             .catch(err => {
               this.context.setError(err);
@@ -317,7 +318,7 @@ class ChaptersEditorPage extends Component {
     changes = {
       deletions: [],
       creations: [],
-      newPositions: false, //incase the user moves all published chapters out
+      newPositions: null, //incase the user moves all published chapters out
       positions: [],
       titles: {},
     };

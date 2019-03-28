@@ -128,7 +128,7 @@ export class ChaptersEditorProvider extends Component {
       title,
       index: Object.keys(this.state.chapters).length+1,
       article_order: null,
-      published: false,
+      published: null,
       date_created: new Date(),
       date_published: null,
       date_modified: null

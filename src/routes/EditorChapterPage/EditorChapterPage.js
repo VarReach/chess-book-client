@@ -13,7 +13,7 @@ class EditorChapterPage extends Component {
     this.state = { 
       chapter: {},
       editorState: null,
-      blockNavigation: false,
+      blockNavigation: null,
     };
   }
 
@@ -56,7 +56,7 @@ class EditorChapterPage extends Component {
       { content }
     )
       .then(() => {
-        this.setState({ blockNavigation: false });
+        this.setState({ blockNavigation: null });
         backup = content;
       })
       .catch(err => {

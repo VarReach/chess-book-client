@@ -6,7 +6,7 @@ class BookSelectMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDropDown: false,
+      showDropDown: null,
     }
     this.dropDown = React.createRef();
   }
@@ -41,7 +41,7 @@ class BookSelectMenu extends Component {
   }
 
   hideDropDown = () => {
-    this.setState({ showDropDown: false }, () => {document.removeEventListener('click', this.hideDropDown)});
+    this.setState({ showDropDown: null }, () => {document.removeEventListener('click', this.hideDropDown)});
   }
 
   handleOnClick = (bookId) => {

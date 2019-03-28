@@ -7,7 +7,7 @@ export default class DropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDropDown: false,
+      showDropDown: null,
     };
     this.dropDown = React.createRef();
   }
@@ -32,7 +32,7 @@ export default class DropDown extends Component {
   }
 
   hideDropDown = () => {
-    this.setState({ showDropDown: false }, () => {document.removeEventListener('click', this.hideDropDown)});
+    this.setState({ showDropDown: null }, () => {document.removeEventListener('click', this.hideDropDown)});
   }
 
   render() {

@@ -16,7 +16,7 @@ import './App.css'
 
 class App extends Component {
   state = {
-    showLandingInfo: false,
+    showLandingInfo: null,
   }
 
   static contextType = UserContext;
@@ -35,7 +35,7 @@ class App extends Component {
 
   
   handleHideLandingInfo = () => {
-    this.setState({ showLandingInfo: false });
+    this.setState({ showLandingInfo: null });
   }
 
   handleShowLandingInfo = () => {
@@ -45,9 +45,9 @@ class App extends Component {
   render() {
     return (
       <>
-        {(this.state.showLandingInfo) && <LandingInfo handleHideLandingInfo={this.handleHideLandingInfo}/>}
-        <button onClick={this.handleShowLandingInfo} className="landing-info-button"><i className="fas fa-info"/></button>
         <Header />
+        <button onClick={this.handleShowLandingInfo} className="landing-info-button"><i className="fas fa-info"/></button>
+        {(this.state.showLandingInfo) && <LandingInfo handleHideLandingInfo={this.handleHideLandingInfo}/>}
           <main role="main">
             <Switch>
               <PublicOnlyRoute
