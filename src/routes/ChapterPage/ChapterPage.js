@@ -34,7 +34,7 @@ export default class ChapterPage extends Component {
         this.context.setChapter(chapter, this.finishLoading);
       })
       .catch(err => {
-        if (err.error && err.error.includes('doesn\'t exist')) {
+        if (err.message && err.message.includes('doesn\'t exist')) {
           this.setState({ chapterNotFound: true, loading: null });
         }
         this.context.setError(err);

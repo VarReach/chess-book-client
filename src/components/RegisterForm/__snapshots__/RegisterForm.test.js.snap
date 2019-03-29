@@ -2,34 +2,33 @@
 
 exports[`RegisterForm component renders the form 1`] = `
 <form
-  className="auth-form"
   onSubmit={[Function]}
 >
   <div
-    className="auth-form__input-holder"
+    className="form__input-holder"
   >
     <label
-      htmlFor="auth-form__user-name-input"
+      htmlFor="form__user-name-input"
     >
       User name
     </label>
     <input
-      id="auth-form__user-name-input"
+      id="form__user-name-input"
       name="user_name"
       required={true}
     />
   </div>
   <div
-    className="auth-form__input-holder"
+    className="form__input-holder"
   >
     <label
-      htmlFor="auth-form__password"
+      htmlFor="form__password"
     >
       Password
     </label>
     <input
-      className="auth-form__password-input"
-      id="auth-form__password"
+      className="form__password-input"
+      id="form__password"
       name="password"
       placeholder="At least 6 characters"
       required={true}
@@ -37,29 +36,29 @@ exports[`RegisterForm component renders the form 1`] = `
     />
   </div>
   <div
-    className="auth-form__input-holder"
+    className="form__input-holder"
   >
     <label
-      htmlFor="auth-form__password-reenter"
+      htmlFor="form__password-reenter"
     >
       Re-enter password
     </label>
     <input
-      className="auth-form__password-reenter-input"
-      id="auth-form__password-reenter"
+      className="form__password-reenter-input"
+      id="form__password-reenter"
       name="password_reenter"
       required={true}
       type="password"
     />
   </div>
   <button
-    className="auth-form__auth-button"
+    className="form__button"
     type="submit"
   >
     Register
   </button>
   <div
-    className="auth-form__register-holder"
+    className="form__register-holder"
   >
     <span>
       Already registered?

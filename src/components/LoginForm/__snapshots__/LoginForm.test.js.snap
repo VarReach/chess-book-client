@@ -2,14 +2,14 @@
 
 exports[`LoginForm component renders the form 1`] = `
 <form
-  className="auth-form"
+  className="form"
   onSubmit={[Function]}
 >
   <div
-    className="auth-form__input-holder"
+    className="form__input-holder"
   >
     <label
-      htmlFor="auth-form__user-name-input"
+      htmlFor="form__user-name-input"
     >
       User name
     </label>
@@ -20,15 +20,15 @@ exports[`LoginForm component renders the form 1`] = `
     />
   </div>
   <div
-    className="auth-form__input-holder"
+    className="form__input-holder"
   >
     <label
-      htmlFor="auth-form__password"
+      htmlFor="form__password"
     >
       Password
     </label>
     <input
-      className="auth-form__password-input"
+      className="form__password-input"
       id="login-form__password"
       name="password"
       required={true}
@@ -36,13 +36,13 @@ exports[`LoginForm component renders the form 1`] = `
     />
   </div>
   <button
-    className="auth-form__auth-button"
+    className="form__button"
     type="submit"
   >
     Log in
   </button>
   <div
-    className="auth-form__register-holder"
+    className="form__register-holder"
   >
     <span>
       new?

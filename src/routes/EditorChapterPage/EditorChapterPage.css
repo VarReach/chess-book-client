@@ -6,3 +6,17 @@
   border: 1px solid #d0d0d0;
   padding: 20px 30px 90px;
 }
+
+@media only screen and (max-width: 1300px) {
+  .article-container.article-editor {
+    padding: 60px 40px 40px;
+    width: calc(100% - 40px);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .article-container.article-editor {
+    padding: 30px 10px 30px;
+    width: calc(100% - 40px);
+  }
+}

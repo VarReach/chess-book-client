@@ -272,6 +272,18 @@ h3 {
   padding: 10px;
 }
 
+.chessboard-button {
+  font-size: 14px !important;
+}
+
+.chessboard-button i {
+  margin: -8px 0 0 -8px !important;
+}
+
+.sidemenu__button:hover {
+  color: #f7f7f7 !important;
+}
+
 @media only screen and (max-width: 400px) {
   .form-holder {
     width: 300px;
