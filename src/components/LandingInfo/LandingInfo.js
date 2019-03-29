@@ -3,7 +3,8 @@ import './LandingInfo.css'
 
 export default function LandingInfo(props) {
   return (
-    <div className="document-blackout">
+    <>
+      <div className="document-blackout"/>
       <aside className="aside-container">
         <div className="landing-info">
           <button onClick={props.handleHideLandingInfo}><i className="fas fa-times"/></button>
@@ -43,6 +44,6 @@ export default function LandingInfo(props) {
           </div>
         </div>
       </aside>
-    </div>
+    </>
   );
 }

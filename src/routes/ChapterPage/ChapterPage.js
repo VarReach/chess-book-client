@@ -130,19 +130,19 @@ export default class ChapterPage extends Component {
     }
     return (
       <>
+        <header className="article__header">
+          <span><Link to={`/?book=${bookId}`}><i className="fas fa-book-open"/>{chapter.book_title}</Link> | Chapter {chapterIndex}</span>
+        </header>
         <article className="article-container">
-          <header className="article__header">
-            <span><Link to={`/?book=${bookId}`}>{chapter.book_title}</Link> | Chapter {chapterIndex}</span>
-            <h1>{chapter.title}</h1>
-          </header>
-        {this.renderHTML()}
-        {(chapterIndex && chapter && this.context.lastChapterAvailable) && 
-          <ChapterControls 
-            chapterId={chapter.id} 
-            chapterIndex={chapterIndex} 
-            bookId={bookId}
-            handleControlsOnClick={this.handleControlsOnClick}
-          />}
+          <h1>{chapter.title}</h1>
+          {this.renderHTML()}
+          {(chapterIndex && chapter && this.context.lastChapterAvailable) && 
+            <ChapterControls 
+              chapterId={chapter.id} 
+              chapterIndex={chapterIndex} 
+              bookId={bookId}
+              handleControlsOnClick={this.handleControlsOnClick}
+            />}
         </article>
       </>
       

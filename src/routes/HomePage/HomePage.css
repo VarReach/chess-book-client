@@ -26,7 +26,6 @@
   height: 40px;
   background-color: transparent;
   border: none;
-  color: #838383;
   font-size: 22px;
   outline: none;
   background-color: #f7f7f7;
@@ -36,7 +35,6 @@
 
 .home-page__header-book-button:hover {
   cursor: pointer;
-  color: #294985;
 }
 
 .home-page__header-book-button:hover, .home-page__header-book-button:focus {

@@ -11,7 +11,7 @@ export default class Chessboard extends Component {
             draggable={false} 
             darkSquareStyle={{ 'backgroundColor': '#7b605a'}}
             lightSquareStyle={{ 'backgroundColor': '#d9b69c'}}
-            calcWidth={() => window.innerWidth < 500 ? 280 : 400}
+            calcWidth={() => window.innerWidth < 500 ? 240 : 400}
           />
         </div>
         {this.props.data.caption && 

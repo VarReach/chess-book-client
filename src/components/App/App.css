@@ -5,13 +5,13 @@ body {
 }
 
 .document-blackout {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   background-color: #0000002f;
-  z-index: 2;
-  min-height: 100%;
+  z-index: 6; /* this is to fix issues with chessboard pieces being over it */
 }
 
 .container {
@@ -23,8 +23,10 @@ body {
 
 .article-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 45px 120px 0;
+  background-color: #f7f7f7;
 }
 
 .landing-info-button {
@@ -33,7 +35,6 @@ body {
   right: 5px;
   border: none;
   outline: none;
-  color: #838383;
   border: 1px solid #c0c0c0;
   width: 20px;
   height: 20px;
@@ -43,16 +44,28 @@ body {
   font-size: 10px;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 3px 0 0 #00000054;
+  box-shadow: 0 3px 0 0 #00000014;
 }
 
 .landing-info-button:hover {
   cursor: pointer;
-  color: #294985;
 }
 
 .landing-info-button:hover, .landing-info-button:focus {
-  outline: 3px solid #00000054;
+  outline: 3px solid #00000014;
+  box-shadow: none;
+}
+
+button, a {
+  color: #D52941;
+}
+
+button:disabled {
+  color: #242831;
+}
+
+button:hover:not(:disabled), a:hover {
+  color: #990D35;
 }
 
 i.fas {
@@ -152,6 +165,14 @@ h3 {
   }
 
   .article-container {
-    padding: 0 20px;
+    padding: 45px 80px 0;
+    width: calc(100% - 40px);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .article-container {
+    padding: 5px 20px 0;
+    width: calc(100% - 40px);
   }
 }

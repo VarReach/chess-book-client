@@ -1,5 +1,5 @@
 .app__header {
-  background-color: #2f343e;
+  background-color: #990D35;
   height: 96px;
   color: #f7f7f7;
   box-shadow: 0 5px 0 0 #d9d9d9;
@@ -19,6 +19,10 @@
   text-decoration: none;
   letter-spacing: 0.03em;
   padding-right: 20px;
+}
+
+a.app__header-title:hover {
+  color: #f7f7f7;
 }
 
 .app__header-nav {
@@ -59,7 +63,8 @@
 }
 
 .app__header-nav-user-button:focus {
-  background-color: #4d5b75;
+  background-color: #363e53;
+  color: #f7f7f7;
 }
 
 .app__header-nav-user-button:hover
@@ -69,7 +74,8 @@
 
 
 .app__header-nav>a:hover, .app__header-nav-user-button:hover {
-  background-color: #4d5b75;
+  background-color: #363e53;
+  color: #f7f7f7 !important;
 }
 
 #app__header-user-dropdown {
@@ -103,7 +109,8 @@
 }
 
 #app__header-user-dropdown a:hover, #app__header-user-dropdown a:focus {
-  background-color: #363e53;
+  background-color: #4d5b75;
+  color: #f7f7f7;
   outline: none;
 } 
 

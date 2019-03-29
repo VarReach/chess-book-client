@@ -1,7 +1,11 @@
 .aside-container {
+  position: absolute;
+  z-index: 7;
   max-width: 1000px;
   margin: 50px auto;
   width: 100%;
+  left: 0;
+  right: 0;
 }
 
 .landing-info {

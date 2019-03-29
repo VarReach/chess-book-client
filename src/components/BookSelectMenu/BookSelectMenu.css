@@ -44,6 +44,7 @@
 .book-select__dropdown-menu button:hover {
   cursor: pointer;
   background-color: #4d5b75;
+  color: #f7f7f7 !important;
 }
 
 .book-select__dropdown-menu button:focus {
@@ -52,4 +53,5 @@
 
 .book-select__dropdown-menu button:disabled:hover, .book-select__dropdown-menu button:disabled {
   background-color: #2f343e;
+  color: #f7f7f7;
 }

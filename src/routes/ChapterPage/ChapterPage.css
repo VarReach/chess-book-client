@@ -5,17 +5,28 @@
 }
 
 .article__header {
-  margin: 60px 0 85px;
+  margin: 0 auto;
+  padding: 60px 80px 40px;
+  width: 100%;
+  max-width: 1280px;
+  background-color: #f7f7f7;
+  box-shadow: inset 0 5px 0 0 #00000014;
 }
 
-.article__header h1 {
-  margin: 0;
-  font-size: 36px;
+.article__header a {
+  color: #242425;
+  text-decoration: none;
+}
+
+.article__header a:hover {
+  
+  text-decoration: underline;
 }
 
 .article__header span {
+  border-radius: 5px;
   font-size: 14px;
-  color: #48484a;
+  color: #242425;
   font-weight: 500;
 }
 
@@ -36,12 +47,12 @@
   line-height: 14px;
   color: #7a7a7a;
 }
-.article-container p, .article-container li, .article-container a, .article-container h2 {
+.article-container p, .article-container li, .article-container h2 {
   color: #242425;
 }
 
 .article-container h2 {
-  font-size: 20px;
+  font-size: 24px;
   margin-top: 40px;
   text-transform: capitalize;
 }
@@ -61,8 +72,8 @@
 }
 
 .article-container figure {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 .article-container blockquote {
@@ -84,19 +95,24 @@
   vertical-align: -0.4em;
 }
 
-.article-container a {
+.article-container h1 {
   color: #242425;
 }
 
+.article-container a {
+  font-weight: 500;
+  text-decoration: none;
+}
+
 .article-container a:hover {
-  color: #294985;
+  text-decoration: underline;
 }
 
 .article__chapter-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 0 70px;
+  padding: 50px 0 70px;
 }
 
 .article__chapter-buttons-holder {
@@ -111,7 +127,7 @@
   width: 60px;
   height: 40px;
   border: 1px solid #c0c0c0;
-  box-shadow: 0 3px 0 0 #d9d9d9;
+  box-shadow: 0 3px 0 0 #00000014;
 }
 
 .article__chapter-controls button {
@@ -127,17 +143,26 @@
 
 .article__chapter-controls button:hover:not(:disabled) {
   cursor: pointer;
-  color: #294985;
 }
 
 .article__chapter-controls a:hover, 
 .article__chapter-controls a:focus,
 .article__chapter-controls button:hover:not(:disabled),
 .article__chapter-controls button:focus:not(:disabled) {
-  outline: 3px solid #d9d9d9;
+  outline: 3px solid #00000014;
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 1300px) {
+  .article__header {
+    padding: 60px 40px 40px;
+    width: calc(100% - 40px);
+  }
+
+  .article-container h1 {
+    font-size: 34px;
+  }
+
   .article-container p, .article-container li {
     font-size: 16px;
   }
@@ -148,7 +173,12 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .article__header h1 {
+  .article__header {
+    padding: 30px 10px 30px;
+    width: calc(100% - 40px);
+  }
+  
+  .article-container h1 {
     font-size: 28px;
   }
 
@@ -173,4 +203,12 @@
     margin: 12px 10px;
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .article-container figure {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
 
