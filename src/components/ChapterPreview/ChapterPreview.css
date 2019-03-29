@@ -21,6 +21,10 @@
   border-left: 20px solid #c0c0c0;
 }
 
+.chapter-preview__chapter-details {
+  width: calc(100% - 100px);
+}
+
 .chapter-preview__chapter-details h3 {
   margin: 3px 0 0;
   font-size: 30px;
@@ -102,6 +106,10 @@ span.chapter-preview__chapter-index {
 }
 
 @media only screen and (max-width: 600px) {
+  .chapter-preview__chapter-details {
+    width: 100%;
+  }
+
   .chapter-preview__chapter-details h3 {
     font-size: 18px;
   }

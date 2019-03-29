@@ -55,6 +55,19 @@
   margin-top: 80px;
 }
 
+.editor-chapter__info {
+  width: calc(100% - 30px);
+}
+
+.editor-chapter__info h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editor-chapter__info a {
+  overflow: hidden;
+  width: 100%;
+}
 
 @media only screen and (max-width: 1300px) {
   .editor-book-page__container h1 {
