@@ -5,11 +5,13 @@ import EditorBookContext from '../../contexts/EditorBookContext';
 import EditorBookApiService from '../../services/editor-book-api-service';
 import EditorChaptersApiService from '../../services/editor-chapters-api-service';
 import Column from '../../components/Editor/Column/Column';
-import NewChapterForm from '../../components/Editor/NewChapterForm/NewChapterForm';
-import EditChapterForm from '../../components/Editor/EditChapterForm/EditChapterForm';
+import Loading from '../../components/Loading/Loading';
 import helpers from '../../helpers/misc-helpers';
+import PopupForm from '../../components/PopupForm/PopupForm';
+import Error from '../../components/Error/Error';
 import uuid from 'uuid/v4';
-import { ninvoke } from 'q';
+import { Link } from 'react-router-dom';
+import './EditorBookPage.css'
 
 //holds any changes made
 let changes = {
@@ -27,10 +29,15 @@ class ChaptersEditorPage extends Component {
     book: {},
     columns: {},
     chapterOrder: [],
-    fetching: null,
+    loading: true,
     editChapterForm: null,
-    newChapterForm: null,
     blockNavigation: null,
+  }
+
+  static defaultProps = {
+    match: {
+      params: {}
+    }
   }
 
   static contextType = EditorBookContext;
@@ -41,6 +48,7 @@ class ChaptersEditorPage extends Component {
 
   componentWillUnmount() {
     this.context.clearChapters();
+    window.onbeforeunload = undefined;
   }
 
   componentDidUpdate() {
@@ -113,17 +121,13 @@ class ChaptersEditorPage extends Component {
         const { title, id } = resJson;
         //save backups of the indexes so on drag/drop can check for changes made
         orderBackup = pubChapterIds;
-        this.setState({ book: { title, id }});
+        this.setState({ book: { title, id }, loading: null });
         //update the context
         this.context.setChapters(chapters, columns);
       })
       .catch(err => {
         this.context.setError(err);
       });
-  }
-
-  showNewChapterForm = () => {
-    this.setState({ newChapterForm: true });
   }
 
   hideNewChapterForm = () => {
@@ -191,16 +195,14 @@ class ChaptersEditorPage extends Component {
     e.preventDefault();
     //check if there are no changes to be made
     if (!this.state.blockNavigation) {
-      console.error('no changes');
       return;
     }
     //check if it's already doing a fetch request to prevent overlap
-    if (this.state.fetching) {
-      console.error('already fetching');
+    if (this.state.loading) {
       return;
     }
     this.resetChanges();
-    this.getChapters();
+    this.setState({ loading: true}, () => this.getChapters())
   }
 
   updateCreatedChapterIds = (id, actualId) => {
@@ -254,19 +256,17 @@ class ChaptersEditorPage extends Component {
     e.preventDefault();
     //check if there are no changes to be made
     if (!this.state.blockNavigation) {
-      console.error('no changes');
       return;
     }
     //check if it's already doing a fetch request to prevent double-dipping
-    if (this.state.fetching) {
-      console.error('already fetching');
+    if (this.state.loading) {
       return;
     }
 
     const deleteRequests = this.createDeleteRequests();
     const createRequests = this.createCreateRequests();
 
-    this.setState({ fetching: true }, () => {
+    this.setState({ loading: true }, () => {
       //handle all creation/deletion requests
       Promise.all([
         ...deleteRequests,
@@ -278,10 +278,7 @@ class ChaptersEditorPage extends Component {
             //get updated DOM, reset the changes object and state 
             .then(() => {
               this.resetChanges();
-              this.setState({ fetching: null });
-            })
-            .catch(err => {
-              this.context.setError(err);
+              this.getChapters();
             });
         })
         .catch(err => {
@@ -304,7 +301,7 @@ class ChaptersEditorPage extends Component {
           blockNavigation = value;
           break;
         }
-      } else {
+      } else if (value) {
         if (Object.keys(value).length > 0) {
           blockNavigation = true;
           break;
@@ -406,32 +403,48 @@ class ChaptersEditorPage extends Component {
 
   handleCreateChapter = (e) => {
     e.preventDefault();
-    const { title } = e.target;
+    const title = prompt('Enter a name for the new chapter:')
+    if (!title) {
+      return;
+    }
+    const titleError = helpers.verifyChapterTitle(title);
+    if (titleError) {
+      this.context.setError(titleError);
+      return;
+    }
     const tempId = uuid();
     this.updateChangesObjOnCreate(tempId);
-    this.context.createChapter(title.value, this.state.book.id, tempId);
+    this.context.createChapter(title, this.state.book.id, tempId);
     this.hideNewChapterForm();
   }
 
   handleDeleteChapter = (chapterId) => {
-    let columnId;
-    //find what column it's in and save to columnId
-    for (const [key,value] of Object.entries(this.context.columns)) {
-      if (value.chapterIds.indexOf(chapterId) !== -1) {
-        columnId = key;
-        break;
+    const confirmation = window.confirm(`Are you sure you want to delete the chapter?`)
+    if (confirmation) {
+      let columnId;
+      //find what column it's in and save to columnId
+      for (const [key,value] of Object.entries(this.context.columns)) {
+        if (value.chapterIds.indexOf(chapterId) !== -1) {
+          columnId = key;
+          break;
+        }
       }
+      this.updateChangesObjOnDelete(chapterId, columnId);
+      this.context.deleteChapter(chapterId, columnId);
     }
-    this.updateChangesObjOnDelete(chapterId, columnId);
-    this.context.deleteChapter(chapterId, columnId);
   }
 
   handleEditChapter = (e) => {
     e.preventDefault();
-    const { title } = e.target;
+    const { rename } = e.target;
     const chapterId = this.state.editChapterForm;
-    this.updateChangesObjOnEditTitle(chapterId, title.value);
-    this.context.changeChapterTitle(chapterId, title.value);
+    const titleError = helpers.verifyChapterTitle(rename.value);
+    if (titleError) {
+      this.context.setError(titleError);
+      return;
+    }
+    this.updateChangesObjOnEditTitle(chapterId, rename.value);
+    this.context.changeChapterTitle(chapterId, rename.value);
     this.hideEditChapterForm();
   }
 
@@ -455,9 +468,33 @@ class ChaptersEditorPage extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading status={this.context.error} />
+    }
+    let editElements;
+    if (this.state.editChapterForm) {
+      const chapter = this.context.chapters[this.state.editChapterForm];
+      editElements = [
+        {
+          type: 'header',
+          text: 'Edit'
+        },
+        {
+          type: 'input',
+          text: 'Enter a new name',
+          props: {
+            name: 'rename',
+            placeholder: chapter.title,
+            id: 'editor-chapters-form__rename'
+          },
+        },
+      ];
+    }
     return (
-      <>
+      <div className="editor-book-page__container container">
+        {this.context.error && <Error error={this.context.error.message} hideError={() => this.context.setError(null)} />}
         {this.state.book.title && <h1>{this.state.book.title}</h1>}
+        <span><Link to="/editor">Editor</Link> | Chapter {this.props.match.params.bookId}</span>
         <Prompt
           when={this.state.blockNavigation}
           message='You have unsaved changes'
@@ -465,12 +502,14 @@ class ChaptersEditorPage extends Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           {this.getColumns()}
         </DragDropContext>
-        {this.state.newChapterForm && <NewChapterForm handleCreateNewChapter={this.handleCreateChapter}/>}
-        {this.state.editChapterForm && <EditChapterForm title={this.context.chapters[this.state.editChapterForm].title} handleEditChapter={this.handleEditChapter}/>}
-        <button onClick={this.showNewChapterForm}>Create new chapter</button>
-        {this.state.blockNavigation && <button onClick={this.onSaveClick}>Save Changes</button>}
-        {this.state.blockNavigation && <button onClick={this.onDiscardClick}>Discard Changes</button>}
-      </>
+        {/* {this.state.newChapterForm && <NewChapterForm handleCreateNewChapter={this.handleCreateChapter}/>} */}
+        {this.state.editChapterForm && <PopupForm handleOnSubmit={this.handleEditChapter} handleCancel={this.hideEditChapterForm} elements={editElements}/>}
+        <div className="editor-book-page__button-holder">
+          <button onClick={this.handleCreateChapter}><i className="fas fa-plus"/></button>
+          {this.state.blockNavigation && <button onClick={this.onSaveClick}><i className="fas fa-save"/></button>}
+          {this.state.blockNavigation && <button onClick={this.onDiscardClick}><i className="fas fa-ban"/></button>}
+        </div>
+      </div>
     );
     
   }

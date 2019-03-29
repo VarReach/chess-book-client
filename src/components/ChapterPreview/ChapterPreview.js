@@ -15,7 +15,7 @@ class ChapterPreview extends Component {
         {this.props.date && <CompletedPreview chapterId={chapter.id} date={this.props.date}/>}
         <div className="chapter-preview__chapter-details">
           <span className="chapter-preview__chapter-index">{`Chapter ${index+1}`}</span>
-          <h2>{chapter && chapter.title}</h2>
+          <h3>{chapter && chapter.title}</h3>
         </div>
       </Link>
     );

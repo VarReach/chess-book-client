@@ -21,7 +21,7 @@
   border-left: 20px solid #c0c0c0;
 }
 
-.chapter-preview__chapter-details h2 {
+.chapter-preview__chapter-details h3 {
   margin: 3px 0 0;
   font-size: 30px;
   display: inline-block;
@@ -33,7 +33,7 @@
   width: 100%;
 }
 
-.chapter-preview:hover h2 {
+.chapter-preview:hover h3 {
   color: #990D35;
 }
 
@@ -74,7 +74,7 @@ span.chapter-preview__chapter-index {
 }
 
 @media only screen and (max-width: 1300px) {
-  .chapter-preview__chapter-details h2 {
+  .chapter-preview__chapter-details h3 {
     font-size: 24px;
   }
 
@@ -102,7 +102,7 @@ span.chapter-preview__chapter-index {
 }
 
 @media only screen and (max-width: 600px) {
-  .chapter-preview__chapter-details h2 {
+  .chapter-preview__chapter-details h3 {
     font-size: 18px;
   }
 

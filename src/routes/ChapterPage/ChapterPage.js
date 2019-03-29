@@ -111,7 +111,6 @@ export default class ChapterPage extends Component {
             this.props.history.push(`/book/${bookId}/chapter/${chapterIndex}`);
           })
           .catch(err => {
-            console.error(err);
             this.context.setError(err);
           });
       });

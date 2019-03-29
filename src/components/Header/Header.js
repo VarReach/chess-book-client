@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import TokenService from '../../services/token-service';
 import { Link } from 'react-router-dom';
 import logo from '../../images/ChessBlogLogo.png';

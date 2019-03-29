@@ -48,36 +48,34 @@ class App extends Component {
         <Header />
         <button onClick={this.handleShowLandingInfo} className="landing-info-button"><i className="fas fa-info"/></button>
         {(this.state.showLandingInfo) && <LandingInfo handleHideLandingInfo={this.handleHideLandingInfo}/>}
-          <main role="main">
-            <Switch>
-              <PublicOnlyRoute
-                path='/login'
-                component={LoginPage}
-              />  
-              <PublicOnlyRoute
-                path='/register'
-                component={RegisterPage}
-              />  
-              <Route
-                exact
-                path="/"
-                component={HomePage}
-              />
-              <Route
-                path="/book/:bookId/chapter/:chapterIndex"
-                component={ChapterPage}
-              />
-              <PrivateRoute
-                path='/editor'
-                component={EditorPage}
-              />
-              <Route
-                component={NotFoundPage}
-              />
-            </Switch>
-          </main>
-        <footer role="contentinfo" className="container footer">
-        </footer>
+        <main role="main">
+          <Switch>
+            <PublicOnlyRoute
+              path='/login'
+              component={LoginPage}
+            />  
+            <PublicOnlyRoute
+              path='/register'
+              component={RegisterPage}
+            />  
+            <Route
+              exact
+              path="/"
+              component={HomePage}
+            />
+            <Route
+              path="/book/:bookId/chapter/:chapterIndex"
+              component={ChapterPage}
+            />
+            <PrivateRoute
+              path='/editor'
+              component={EditorPage}
+            />
+            <Route
+              component={NotFoundPage}
+            />
+          </Switch>
+        </main>
       </>
     );
   }

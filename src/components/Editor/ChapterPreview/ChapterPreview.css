@@ -1,8 +1,108 @@
-.editor__chapter {
+.editor-chapter__button-holder button{
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+button.info-button {
+  position: absolute;
+  left: -10px;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.editor__chapter button {
+  position: relative;
+  padding: 0;
+  padding-top: 3px;
+  outline: none;
   background-color: #f7f7f7;
   border: 1px solid #c0c0c0;
-  padding: 10px;
-  margin: 0 10px 10px 10px;
   box-shadow: 0 3px 0 0 #d9d9d9;
-  border-radius: 5px;
+}
+
+.editor__chapter button:hover {
+  cursor: pointer;
+}
+
+.editor__chapter button:hover, .editor__chapter button:focus {
+  outline: 3px solid #00000014;
+  box-shadow: none;
+}
+
+.editor__chapter h3 {
+  margin: 3px 0 0;
+  font-size: 30px;
+  display: inline-block;
+  font-family: 'Libre Baskerville', serif;
+  color: #242425;
+  width: 100%;
+}
+.editor__chapter h3:hover {
+  color: #990D35;
+}
+
+.editor__chapter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 112px;
+  position: relative;
+  background-color: #f7f7f7;
+  border: 1px solid #c0c0c0;
+  text-decoration: none !important;
+  margin-bottom: 20px;
+  padding: 5px 5px 5px 15px;
+  box-shadow: 0 3px 0 0 #d9d9d9;
+}
+
+.editor__chapter:hover, .editor__chapter:focus {
+  box-shadow: none;
+  outline: 3px solid #d9d9d9;
+}
+
+.editor-chapter-info {
+  color: #f7f7f7;
+  padding: 20px;
+  left: 55px;
+}
+
+.editor-chapter-info:after {
+	right: 100%;
+	top: calc(50% - 16px);
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: #00000000;
+  border-right-color: #242831;
+  /* border-width: 0 16px 8px 16px; */
+  border-width: 16px 8px 16px 16px;
+}
+
+.editor-chapter__info {
+  display: flex;
+  align-items: center;
+}
+
+.editor-chapter__button-holder {
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media only screen and (max-width: 1300px) {
+  .editor__chapter h3 {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .editor__chapter h3 {
+    font-size: 18px;
+  }
 }

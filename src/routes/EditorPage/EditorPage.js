@@ -9,21 +9,19 @@ class EditorPage extends Component {
   render() {
     return (
       <EditorBookProvider>
-        <section>
-          <Route
-            exact
-            path="/editor"
-            component={EditorBooksListPage}
-          />
-          <Route
-            path='/editor/books/:bookId'
-            component={EditorBookPage}
-          />
-          <Route
-            path='/editor/chapters/:chapterId'
-            component={EditorChapterPage}
-          />
-        </section>
+        <Route
+          exact
+          path="/editor"
+          component={EditorBooksListPage}
+        />
+        <Route
+          path='/editor/books/:bookId'
+          component={EditorBookPage}
+        />
+        <Route
+          path='/editor/chapters/:chapterId'
+          component={EditorChapterPage}
+        />
       </EditorBookProvider>
     );
   }

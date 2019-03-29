@@ -22,5 +22,13 @@ export default {
     }
     month = months[month];
     return month+' '+day+', '+year;
+  },
+  verifyChapterTitle(title) {
+    if (title.length < 6) {
+      return { message: 'Book title must be atleast 6 characters'};
+    } else if (title.length > 72) {
+      return { message: 'Book title must be less than 72 characters'};
+    }
+    return;
   }
 }

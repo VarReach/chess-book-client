@@ -3,7 +3,9 @@ import { MegadraftEditor, editorStateFromRaw, editorStateToJSON } from 'megadraf
 import { Link } from 'react-router-dom';
 import EditorChaptersApiService from '../../services/editor-chapters-api-service';
 import ChessboardPlugin from '../../components/ArticleEditor/Plugins/Chessboard';
+import Loading from '../../components/Loading/Loading';
 import '../../../node_modules/megadraft/dist/css/megadraft.css';
+import './EditorChapterPage.css';
 
 let backup;
 
@@ -11,10 +13,18 @@ class EditorChapterPage extends Component {
   constructor(props) {
     super(props);
     this.state = { 
+      loading: true,
       chapter: {},
+      error: null,
       editorState: null,
       blockNavigation: null,
     };
+  }
+
+  static defaultProps = {
+    match: {
+      params: {}
+    }
   }
 
   componentDidMount() {
@@ -23,12 +33,13 @@ class EditorChapterPage extends Component {
       .then(chapter => {
         this.setState({ 
           chapter,
-          editorState: editorStateFromRaw(chapter.content)
+          editorState: editorStateFromRaw(chapter.content),
+          loading: null,
         });
         backup = editorStateToJSON(editorStateFromRaw(chapter.content));
       })
       .catch(err => {
-        console.error(err);
+        this.setState({ error: err });
       });
   }
 
@@ -60,43 +71,34 @@ class EditorChapterPage extends Component {
         backup = content;
       })
       .catch(err => {
-        console.error(err);
-      });
-  }
-
-  handleEditChapterTitle = (e) => {
-    e.preventDefault();
-    const newTitle = prompt('Please enter a new name');
-    EditorChaptersApiService.updateChapter(
-      this.props.match.params.chapterId,
-      { title: newTitle }
-    )
-      .then(() => {
-        const newChapter = {...this.state.chapter, title: newTitle };
-        this.setState({ chapter: newChapter })
-      })
-      .catch(err => {
-        console.error(err);
+        this.setState({ error: err });
       });
   }
 
   render() {
+    const chapter = this.state.chapter;
+    if (this.state.loading) {
+      return <Loading status={this.state.error} />
+    }
     return (
       <>
-        <header role="banner">
-          <h2>{this.state.chapter.title}</h2>
-          <Link to={`/editor/books/${this.state.chapter.book_id}`}>Chapters</Link>
-          <button onClick={this.handleEditChapterTitle}>Rename Chapter</button>
+        <header className="article__header">
+          <span><Link to={`/editor/books/${chapter.book_id}`}><i className="fas fa-book-open"/>Chapter List</Link> | Chapter {chapter.id}</span>
         </header>
-        <section className='editer__article-editor-holder'>
-          {this.state.editorState && <MegadraftEditor
-            editorState={this.state.editorState}
-            onChange={this.onChange}
-            spellCheck="true"
-            plugins={[ChessboardPlugin]}
-          />}
-          <button disabled={!this.state.blockNavigation} onClick={this.onSaveClick}>Save Changes</button>
-        </section>
+        <article className="article-editor article-container">
+          <h1>{this.state.chapter.title}</h1>
+          <section className='editer__article-editor-holder'>
+            {this.state.editorState && <MegadraftEditor
+              editorState={this.state.editorState}
+              onChange={this.onChange}
+              spellCheck="true"
+              plugins={[ChessboardPlugin]}
+            />}
+            <div className="editor-book-page__button-holder">
+              <button disabled={!this.state.blockNavigation} onClick={this.onSaveClick}><i className="fas fa-save"/></button>
+            </div>  
+          </section>
+        </article>
       </>
     );
   }

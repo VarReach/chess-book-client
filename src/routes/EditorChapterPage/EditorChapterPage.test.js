@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import EditorChapterPage from './EditorChapterPage';
 
-describe('App component tests', () => {
+describe('EditorChapterPage tests', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
       <BrowserRouter>
-        <App />
+        <EditorChapterPage />
       </BrowserRouter>,
       div
     );

@@ -21,7 +21,7 @@ export default function LandingInfo(props) {
             <section>
               <h4 className="landing-info__section-title">Advanced use</h4>
               <p>When logged in as an admin the editor becomes available. You'll notice a new link to it on the navigation banner.</p>
-              <p>Inside the editor you can create, delete, and edit all books and their respective chapters. See the <a href="#">README</a> for further details of how the editor works.</p>
+              <p>Inside the editor you can create, delete, and edit all books and their respective chapters. See the <a href="https://github.com/VarReach/chess-book-client/blob/master/README.md">README</a> for further details of how the editor works.</p>
             </section>
             <footer className="landing-info__footer">
               <div className="landing-info__footer-account-info">

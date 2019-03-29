@@ -1,0 +1,10 @@
+.popup-form {
+  position: fixed;
+  top: 150px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  background-color: #f7f7f7;
+  border: 1px solid #c0c0c0;
+}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import UserContext from '../../contexts/UserContext';
-import './LoginPage.css';
 
 export default class LoginPage extends Component {
   static defaultProps = {
@@ -22,8 +21,8 @@ export default class LoginPage extends Component {
 
   render() {
     return (
-      <section className="auth-section">
-        <div className="auth-form-holder">
+      <section className="form-section">
+        <div className="form-holder">
           <h2>Log in</h2>
           <LoginForm
             onLoginSuccess={this.handleLoginSuccess}

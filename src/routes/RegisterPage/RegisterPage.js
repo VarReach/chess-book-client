@@ -12,14 +12,13 @@ export default class RegisterPage extends Component {
 
   onRegistrationSuccess = (user) => {
     const { history } = this.props;
-    console.log(history);
     history.push('/login');
   }
 
   render() {
     return (
-      <section className="auth-section">
-        <div className="auth-form-holder">
+      <section className="form-section">
+        <div className="form-holder">
           <h2>Register</h2>
           <RegisterForm
             onRegistrationSuccess={this.onRegistrationSuccess}

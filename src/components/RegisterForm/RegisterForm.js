@@ -26,12 +26,8 @@ export default class RegisterForm extends Component {
         password_reenter.value = '';
         this.props.onRegistrationSuccess(user);
       })
-      .catch(resp => {
-        if (!resp.error) {
-          this.setState({ error: 'Unable to connect to server' });
-          return;
-        }
-        this.setState({ error: resp.error });
+      .catch(error => {
+        this.setState({ error });
       });
 
     user_name.value = '';
@@ -48,44 +44,43 @@ export default class RegisterForm extends Component {
     const { error } = this.state
     return (
       <form
-        className="auth-form"
         onSubmit={this.handleSubmit}
       >
-        {error && <Error error={error} hideError={this.resetError}/>}
-        <div className="auth-form__input-holder">
-          <label htmlFor="auth-form__user-name-input">
+        {error && <Error error={error.message} hideError={this.resetError}/>}
+        <div className="form__input-holder">
+          <label htmlFor="form__user-name-input">
             User name
           </label>
           <input
             required
             name="user_name"
-            id="auth-form__user-name-input"/>
+            id="form__user-name-input"/>
         </div>
-        <div className="auth-form__input-holder">
-          <label htmlFor="auth-form__password">
+        <div className="form__input-holder">
+          <label htmlFor="form__password">
             Password
           </label>
-          <input className="auth-form__password-input"
+          <input className="form__password-input"
             required
             name="password"
             type="password"
             placeholder="At least 6 characters"
-            id="auth-form__password"/>
+            id="form__password"/>
         </div>
-        <div className="auth-form__input-holder">
-          <label htmlFor="auth-form__password-reenter">
+        <div className="form__input-holder">
+          <label htmlFor="form__password-reenter">
             Re-enter password
           </label>
-          <input className="auth-form__password-reenter-input"
+          <input className="form__password-reenter-input"
             required
             name="password_reenter"
             type="password"
-            id="auth-form__password-reenter"/>
+            id="form__password-reenter"/>
         </div>
-        <button type="submit" className="auth-form__auth-button">
+        <button type="submit" className="form__button">
           Register
         </button>
-        <div className="auth-form__register-holder">
+        <div className="form__register-holder">
           <span>Already registered?</span>
         </div>
         <Link to="/login">Log in</Link>

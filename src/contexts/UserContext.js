@@ -36,7 +36,6 @@ export class UserProvider extends Component {
         this.setUser(user);
       })
       .catch(error => {
-        console.error(error);
         this.logout();
       });
   }

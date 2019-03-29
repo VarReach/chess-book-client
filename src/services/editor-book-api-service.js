@@ -58,9 +58,9 @@ const EditorBookApiService = {
     };
     return fetch(`${config.API_ENDPOINT}/editor/books/${id}`, options)
       .then(res => {
-        if (!res.ok) {
-          Promise.reject(`Unable to update book ${id}`);
-        }
+        return (!res.ok) 
+          ? res.json().then(e => Promise.reject(e))
+          : res.json();
       });
   },
   createBook(newBook) {
