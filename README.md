@@ -4,7 +4,7 @@
 
 Welcome to the demo of Chess-Book, a web-app developed to host the eventual chessbook of my father.
 
-Live demo: https://varreach-chess-book-demo.now.sh/
+Live demo: https://varreach-chessbook-demo.now.sh/
 API repo: https://github.com/VarReach/chess-book-api
 
 ---
