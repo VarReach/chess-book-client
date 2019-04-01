@@ -9,8 +9,12 @@ API repo: https://github.com/VarReach/chess-book-api
 
 ## App Summary
 
+![Home page](https://varreach-chessbook-demo.now.sh/static/images/Screenshot-Home.png)
+
 No registration is required to use the app. However, registering and logging in will allow the app to track
 what chapters you've finished.
+
+![Completed chapters preview](https://varreach-chessbook-demo.now.sh/static/images/Screenshot-Completion.png)
 
 The app also supports multiple books should the need arise. You can navigate this list by pressing the button to the right of the book title on the home page.
 
