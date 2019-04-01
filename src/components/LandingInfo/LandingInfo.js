@@ -39,7 +39,6 @@ export default function LandingInfo(props) {
                   </li>
                 </ul>
               </div>
-              <span className="landing-info__reset-info">For the demo only, any changes made are reset every 24 hours.</span>
             </footer>
           </div>
         </div>

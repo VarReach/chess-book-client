@@ -34,7 +34,7 @@ class ChaptersList extends Component {
           this.setState({ bookNotFound: true, loading: false });
           return;
         }
-        this.context.setBooks(booksObj, defaultBook, this.finishLoading);
+        this.context.setBooks(booksObj, queryBookId || defaultBook, this.finishLoading);
       })
       .catch((err) => {
         this.context.setError(err);
