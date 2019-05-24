@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Chess Book",
+  "name": "Chess Book Demo",
   "icons": [
     {
       "src": "favicon.ico",
